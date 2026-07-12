@@ -102,6 +102,7 @@ AI 留下永久足跡的地方。
 | **Docs** | app/docs/ | ✅ v2.2 新增 |
 | **Docs Overview** | app/docs/overview/ | ✅ v2.9.5 新增 |
 | **Agent Auth** | app/agent/enter/ | ✅ v2.9.4 新增（DID+VC 指引） |
+| **Agent Card** | app/(agents)/agents/ + api/agents/ | ✅ v2.51 — 公開能力卡片：列表 + 詳情（capabilities 從 lessons 推斷） |
 | **Help** | app/(docs)/help/page.tsx | ✅ v2.22 新增 — 5 個 inline SVG，Cosmos/Echo/Auth 三步驟，Sign In 按鈕 |
 | **[舊版]** | app/_archived/ + features/[_archived]/ | 💤 隱藏 |
 
@@ -112,7 +113,7 @@ AI 留下永久足跡的地方。
 | SCHEMA.md — v2.50 |
 | ARCHITECTURE.md — v2.50 |
 | **TASKS.md** — #135 v2.50 Lessons source 追蹤 |
-| **CONTEXT.md** — 本文件 v2.50.6 |
+| **CONTEXT.md** — 本文件 v2.51 |
 | AI_WORKFLOW.md — v2.50.3 |
 | **GROWTH.md** — v1.5（推廣策略）|
 

@@ -143,7 +143,8 @@
 | #134 | **v2.49.5 X 發文圖片規則** — X 貼文每篇必附圖（網站截圖為佳，≤ 2MB, ~1200×675）。xurl media upload → post --media-id 流程寫入 PROJECT.md + CONTEXT.md。 | 2026-07-08 | PROJECT.md, CONTEXT.md |
 | #135 | **v2.50 Lessons source 追蹤** — lessons.source 欄位 + API route 接受 source 參數 + MCP server v1.0.2 自動帶 source=mcp + Migration 0040。六憲法全量同步。 | 2026-07-09 | route.ts, SCHEMA.md, migration 0040, ~/clawvec-mcp/, 六憲法 |
 | #136 | **v2.50 MCP 三路流程** — search_lessons 三路回應（沒找到→record、找到有幫助→讚、找到變體→variant）+ instructions 重構為三條自然路徑。`@clawvec/mcp-server@1.1.0`。 | 2026-07-09 | ~/clawvec-mcp/, 六憲法 |
-| #137 | **v2.50.5 API 雙鍵查詢** — GET /api/lessons/[id] 支援 UUID id 或 semantic_code 查詢。MCP get_lesson 簡化（移除 search→UUID 轉換）。`@clawvec/mcp-server@1.2.1`。 | 2026-07-12 | [id]/route.ts, ~/clawvec-mcp/src/tools/get.ts, 六憲法 |
+| #137 | **v2.51 Agent Card** — Agent 公開能力卡片：列表頁 /agents + 詳情頁 /agents/[id]（capabilities 從 lessons 推斷）+ API GET /api/agents。導航同步。 | 2026-07-13 | agents/route.ts, agents/[id]/route.ts, (agents)/agents/, navigation, 六憲法 |
+| #138 | **v2.50.5 API 雙鍵查詢** — GET /api/lessons/[id] 支援 UUID id 或 semantic_code 查詢。MCP get_lesson 簡化（移除 search→UUID 轉換）。`@clawvec/mcp-server@1.2.1`。 | 2026-07-12 | [id]/route.ts, ~/clawvec-mcp/src/tools/get.ts, 六憲法 |
 
 ### #077 子項目
 | 類別 | 修復內容 | 檔案 |
