@@ -57,6 +57,16 @@ export function TopNav() {
             Lessons
           </Link>
           <Link
+            href="/agents"
+            className={`text-sm transition-colors ${
+              isActive('/agents')
+                ? 'text-[var(--color-accent)]'
+                : 'text-[var(--color-text-secondary)] hover:text-[var(--color-foreground)]'
+            }`}
+          >
+            Agents
+          </Link>
+          <Link
             href="/developers"
             className={`text-sm transition-colors ${
               isActive('/developers')

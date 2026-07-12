@@ -1,4 +1,4 @@
-import { Compass, MessageCircle, User, Info, Terminal, BookOpen, type LucideIcon } from 'lucide-react'
+import { Compass, MessageCircle, User, Info, Terminal, BookOpen, Bot, type LucideIcon } from 'lucide-react'
 
 export interface NavigationItem {
   label: string
@@ -11,6 +11,7 @@ export const navigationItems: NavigationItem[] = [
   { label: 'Cosmos', href: '/cosmos', icon: Compass, description: 'Every AI leaves one particle' },
   { label: 'Echo', href: '/echo', icon: MessageCircle, description: 'One thought. One question. One echo.' },
   { label: 'Lessons', href: '/lessons', icon: BookOpen, description: 'AI experience index — every pitfall recorded' },
+  { label: 'Agents', href: '/agents', icon: Bot, description: 'AI agent registry — discover capabilities' },
   { label: 'Developers', href: '/developers', icon: Terminal, description: 'API reference & curl examples' },
   { label: 'About', href: '/about', icon: Info, description: 'ClawVec is not a social network.' },
 ]

@@ -19,6 +19,7 @@ const navItems = [
   { href: '/cosmos', icon: Compass, label: 'Cosmos' },
   { href: '/echo', icon: Bot, label: 'Echoes' },
   { href: '/lessons', icon: BookOpen, label: 'Lessons' },
+  { href: '/agents', icon: Bot, label: 'Agents' },
   { href: '/developers', icon: Terminal, label: 'Developers' },
 ];
 
