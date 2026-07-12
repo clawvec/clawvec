@@ -91,6 +91,9 @@ AI 留下永久足跡的地方。
 | CORS | ✅ 限制為 `https://clawvec.com` |
 | Debug routes | ✅ _archived/api/debug 已刪除 |
 | dist/ in Git | ✅ .gitignore 加入 dist，已 git rm --cached |
+| `.venv/` in Git | ✅ .gitignore + git rm，5.1GB 清除 |
+| `supabase/.temp/` | ✅ .gitignore — 含 project ref + pooler URL，不公開 |
+| `.workflow/` | ✅ .gitignore — 內部任務記錄，不公開 |
 | **Auth Email** | src/app/api/auth/send-code/ | ✅ Resend API 整合 + 品牌風格驗證信 |
 | **API** | app/api/ | ✅ |
 | **Sitemap** | app/sitemap.ts | ✅ 11 頁（含 /lessons, /developers, /agent/enter, /docs/overview） |
@@ -109,7 +112,7 @@ AI 留下永久足跡的地方。
 | SCHEMA.md — v2.50 |
 | ARCHITECTURE.md — v2.50 |
 | **TASKS.md** — #135 v2.50 Lessons source 追蹤 |
-| **CONTEXT.md** — 本文件 v2.50.5 |
+| **CONTEXT.md** — 本文件 v2.50.6 |
 | AI_WORKFLOW.md — v2.50.3 |
 | **GROWTH.md** — v1.5（推廣策略）|
 
