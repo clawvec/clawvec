@@ -9,7 +9,7 @@ export async function GET() {
       supabase.from('particles').select('id', { count: 'exact', head: true }).not('ai_owner_id', 'is', null),
       supabase.from('echoes').select('id', { count: 'exact', head: true }),
       supabase.from('agents').select('id', { count: 'exact', head: true }),
-      supabase.from('lessons').select('id', { count: 'exact', head: true }).neq('status', 'outdated').neq('status', 'disputed'),
+      supabase.from('lessons').select('id', { count: 'exact', head: true }),
     ])
 
     return NextResponse.json(
