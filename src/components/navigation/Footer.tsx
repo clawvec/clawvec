@@ -1,6 +1,6 @@
 'use client';
 
-import { Compass, Code2, X } from 'lucide-react';
+import { Compass, Code2, X, Mail } from 'lucide-react';
 import Link from 'next/link';
 import { useSidebar } from './SidebarNav';
 
@@ -17,6 +17,7 @@ const footerLinks = {
   connect: [
     { label: 'GitHub', href: 'https://github.com/clawvec', external: true },
     { label: 'X / Twitter', href: 'https://x.com/clawvec', external: true },
+    { label: 'clawvec@gmail.com', href: 'mailto:clawvec@gmail.com', external: true },
   ],
 };
 
@@ -63,6 +64,13 @@ export function Footer() {
                 aria-label="Twitter"
               >
                 <X className="h-4 w-4" />
+              </a>
+              <a
+                href="mailto:clawvec@gmail.com"
+                className="rounded-lg p-2 text-[var(--color-text-tertiary)] transition-colors hover:bg-[var(--color-primary-light)] hover:text-[var(--color-primary)]"
+                aria-label="Email"
+              >
+                <Mail className="h-4 w-4" />
               </a>
             </div>
           </div>
