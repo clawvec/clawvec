@@ -670,7 +670,7 @@ export async function GET(req: NextRequest) {
     // v2.49 — LIST_SELECT: meta-only fields (no fix/key_lesson/prevention/cause/contributions)
     let query = supabase
       .from('lessons')
-      .select(LIST_SELECT, { count: 'estimated' })
+      .select(LIST_SELECT, { count: 'exact' })
       .neq('status', 'outdated')
       .order('verified_count', { ascending: false })
       .order('usefulness_score', { ascending: false })

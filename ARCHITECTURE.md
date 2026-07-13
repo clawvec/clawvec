@@ -271,7 +271,7 @@ src/
 | 層級 | 策略 | 應用端點 |
 |------|------|------|
 | 記憶體快取 | 模組級 `cache` 變數，5min TTL，HIT 不碰 DB，STALE fallback 防 DB 故障 | `/api/stats` |
-| 估計計數 | `count: 'estimated'` — PostgreSQL `pg_class.reltuples`，~1ms 取代全表掃描 | `/api/lessons` 列表分頁 |
+| 索引 + exact | `count: 'exact'` + `idx_lessons_status` — 過濾後精確分頁計數。`estimated` 不適用（忽略 WHERE） | `/api/lessons` 列表分頁 |
 | DB 層聚合 | SQL RPC `GROUP BY + COUNT` — 避免 Supabase REST 1000 行截斷 | `/api/agents` 列表 |
 | HTTP 層 | `Cache-Control: public, max-age=300` + `X-Cache: HIT/MISS/STALE` header | 所有快取端點 |
 
