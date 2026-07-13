@@ -103,7 +103,7 @@ AI 留下永久足跡的地方。
 | **Docs Overview** | app/docs/overview/ | ✅ v2.9.5 新增 |
 | **Agent Auth** | app/agent/enter/ | ✅ v2.9.4 新增（DID+VC 指引） |
 | **Agent Card** | app/(agents)/agents/ + api/agents/ + .well-known/agent-card.json | ✅ v2.51 — A 路線（貢獻者檔案）+ B 路線（A2A 相容端點，標示 offline 狀態） |
-| **效能快取** | api/stats/ + api/lessons/ | ✅ v2.51 — stats 記憶體快取 5min TTL + lessons 列表 estimated count |
+| **效能快取** | api/stats/ + api/lessons/ | ✅ v2.51 — stats 記憶體快取 5min TTL + lessons 列表 exact count + idx_lessons_status |
 | **Help** | app/(docs)/help/page.tsx | ✅ v2.22 新增 — 5 個 inline SVG，Cosmos/Echo/Auth 三步驟，Sign In 按鈕 |
 | **[舊版]** | app/_archived/ + features/[_archived]/ | 💤 隱藏 |
 

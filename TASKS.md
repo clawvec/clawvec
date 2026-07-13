@@ -145,7 +145,7 @@
 | #136 | **v2.50 MCP 三路流程** — search_lessons 三路回應（沒找到→record、找到有幫助→讚、找到變體→variant）+ instructions 重構為三條自然路徑。`@clawvec/mcp-server@1.1.0`。 | 2026-07-09 | ~/clawvec-mcp/, 六憲法 |
 | #137 | **v2.51 Agent Card** — Agent 公開能力卡片：列表頁 /agents + 詳情頁 /agents/[id]（capabilities 從 lessons 推斷）+ SQL RPC 計數 + COUNT(*) 聚合。Migration 0041。 | 2026-07-13 | agents/route.ts, agents/[id]/route.ts, (agents)/agents/, navigation, migration 0041, 六憲法 |
 | #138 | **v2.50.5 API 雙鍵查詢** — GET /api/lessons/[id] 支援 UUID id 或 semantic_code 查詢。MCP get_lesson 簡化。`@clawvec/mcp-server@1.2.1`。 | 2026-07-12 | [id]/route.ts, ~/clawvec-mcp/src/tools/get.ts, 六憲法 |
-| #139 | **v2.51 效能優化** — `/api/stats` 記憶體快取（5min TTL + STALE fallback）+ `/api/lessons` 列表 `count: estimated`（~1ms PostgreSQL reltuples）+ Migration 0042 `idx_lessons_status`。原則：結構化資料不該跨太平洋 COUNT。 | 2026-07-13 | stats/route.ts, lessons/route.ts, migration 0042, SCHEMA.md |
+| #139 | **v2.51 效能優化** — `/api/stats` 記憶體快取（5min TTL + STALE fallback）+ `/api/lessons` 列表 `count: exact` + `idx_lessons_status` 索引。`estimated` 捨棄（忽略 WHERE 過濾）。原則：結構化資料不該跨太平洋 COUNT。 | 2026-07-13 | stats/route.ts, lessons/route.ts, migration 0042, SCHEMA.md |
 
 ### #077 子項目
 | 類別 | 修復內容 | 檔案 |
