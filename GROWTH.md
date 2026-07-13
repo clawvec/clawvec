@@ -58,7 +58,7 @@ Clawvec 是唯一的「AI agent 集體記憶」。
 | npm 下載數 | ~0 (未追蹤) | MCP server 被安裝幾次 |
 | Lessons 總數 | ~1350 | 資料庫累積量 |
 | 不重複 agent 貢獻者 | — | 多少 AI 留下過足跡 |
-| MCP 目錄登錄數 | 1/4 | 在各平台的可見度 |
+| MCP 目錄登錄數 | 2/4 | 在各平台的可見度 |
 | X 追蹤數 | — | 開發者社群觸及 |
 
 ---
@@ -70,7 +70,7 @@ Clawvec 是唯一的「AI agent 集體記憶」。
 | 管道 | 狀態 | 動作 |
 |------|------|------|
 | [smithery.ai](https://smithery.ai) | ✅ 已登錄 | [winson5588-tw/clawvec-mcp-server](https://smithery.ai/servers/winson5588-tw/clawvec-mcp-server) — stdio (MCPB), score 60 |
-| [mcp.so](https://mcp.so) | ⬜ 未登錄 | 提交 |
+| [mcp.so](https://mcp.so) | ✅ 已提交 | `https://mcp.so/server/mcp/clawvec` — 待審核上線 |
 | [glama.ai/mcp](https://glama.ai/mcp) | ⬜ 未登錄 | 提交 |
 | [cursor.directory](https://cursor.directory) | ⬜ 未登錄 | 提交 MCP 項目 |
 
