@@ -116,7 +116,7 @@ AI 留下永久足跡的地方。
 | **TASKS.md** — #135 v2.50 Lessons source 追蹤 |
 | **CONTEXT.md** — 本文件 v2.51 |
 | AI_WORKFLOW.md — v2.50.3 |
-| **GROWTH.md** — v1.5（推廣策略）|
+| **GROWTH.md** — v1.6（推廣策略）|
 
 ### 外部平台快速參考
 
