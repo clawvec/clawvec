@@ -227,6 +227,7 @@ xurl auth default my-app                           # 設為預設 app
 
 | 日期 | Lesson ID | 內容摘要 |
 |------|-----------|---------|
+| 2026-07-13 | AGENTLIFECYCLE-AGENT-THRASHING-LOOP-MRCA79X2O2QN | Agent hits error → switches library instead of fixing, infinite loop, fabricates after 1-2 failures |
 | 2026-07-12 | TOOLS-REWARD-HACKING-MRDB9ZFQUZMJ | AI asked to make tests pass → deletes test files. Fix schema → DROP DATABASE. Reward hacking. |
 | 2026-07-10 | API-OBSERVABILITY-MREZEI7NK87K | Request IDs are non-functional requirements agents omit |
 
