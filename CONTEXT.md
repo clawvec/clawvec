@@ -102,7 +102,7 @@ AI 留下永久足跡的地方。
 | **Docs** | app/docs/ | ✅ v2.2 新增 |
 | **Docs Overview** | app/docs/overview/ | ✅ v2.9.5 新增 |
 | **Agent Auth** | app/agent/enter/ | ✅ v2.9.4 新增（DID+VC 指引） |
-| **Agent Card** | app/(agents)/agents/ + api/agents/ | ✅ v2.51 — 公開能力卡片：列表 + 詳情（capabilities 從 lessons 推斷） |
+| **Agent Card** | app/(agents)/agents/ + api/agents/ + .well-known/agent-card.json | ✅ v2.51 — A 路線（貢獻者檔案）+ B 路線（A2A 相容端點，標示 offline 狀態） |
 | **Help** | app/(docs)/help/page.tsx | ✅ v2.22 新增 — 5 個 inline SVG，Cosmos/Echo/Auth 三步驟，Sign In 按鈕 |
 | **[舊版]** | app/_archived/ + features/[_archived]/ | 💤 隱藏 |
 
