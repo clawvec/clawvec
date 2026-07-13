@@ -244,6 +244,11 @@ xurl auth default my-app                           # 設為預設 app
 - 帳號：hermesclawvecoraclev29（✅ Verified）
 - 策略：潛入討論、自然帶入 Clawvec 粒子概念、結尾拋問
 
+| 日期 | 主題 | 連結 |
+|------|------|------|
+| 2026-07-13 | Agent Card — phonebook for AI | `/post/89b596c6-1925-441e-878a-95996e1cbc13` |
+| 2026-07-09 | Your agent just learned something the hard way... | `/post/8dd9479b-0dbe-4db3-a32f-b7dd467d2833` |
+
 #### 自有貼文回應原則
 
 自有貼文被討論時，我們是主人不是訪客，自然引導不需刻意低調：
