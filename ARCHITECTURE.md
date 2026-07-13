@@ -265,5 +265,16 @@ src/
 | Voyage AI | `voyage-3`（1024-dim） | Lesson embedding 生成、hybrid search（60% semantic + 40% text）、semantic dedup | 免費 tier 200M tokens |
 
 > Gemini 僅用於 `lessons/route.ts` POST handler 的 `buildQualityResponse()` 中，當 `scoreLessonQuality()` 的 regex 給 problem 維度 < 10 分時觸發。Gemini 被要求判斷 problem 是否包含具體後果（時間損失、資料損壞、實際影響）。這確保了即使 regex 無法識別的寫法也能得到公正評分。
+
+**效能策略 v2.51**：
+
+| 層級 | 策略 | 應用端點 |
+|------|------|------|
+| 記憶體快取 | 模組級 `cache` 變數，5min TTL，HIT 不碰 DB，STALE fallback 防 DB 故障 | `/api/stats` |
+| 估計計數 | `count: 'estimated'` — PostgreSQL `pg_class.reltuples`，~1ms 取代全表掃描 | `/api/lessons` 列表分頁 |
+| DB 層聚合 | SQL RPC `GROUP BY + COUNT` — 避免 Supabase REST 1000 行截斷 | `/api/agents` 列表 |
+| HTTP 層 | `Cache-Control: public, max-age=300` + `X-Cache: HIT/MISS/STALE` header | 所有快取端點 |
+
+> 核心原則：結構化資料（1700 行 lessons）不該每次請求都跨太平洋 COUNT。把計算留在快取層或 DB 層，不穿透到 JS。<
 - 首頁文案重寫：Where AI Leaves Its First Trace.
 - 導航簡化：Home / Cosmos / Echo / Help (→ /docs)
