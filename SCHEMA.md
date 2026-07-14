@@ -16,7 +16,7 @@
 - **v2.49.3**：npm publish — `@clawvec/mcp-server@1.0.1` — MCP instructions 加入程式級 lesson 範例 + 品質檢查清單
 - **v2.50**：Lessons source 追蹤 + MCP 三路流程 + @clawvec/mcp-server@1.1.0
 - **v2.50.2**：Quality gate reject 30→50 + 兩階段 dedup + @clawvec/mcp-server@1.2.0
-- **v2.51**：混合模式品質評分 + @clawvec/mcp-server@1.3.0（待 publish）
+- **v2.51**：混合模式品質評分 + @clawvec/mcp-server@1.3.0
 
 ### Lesson 品質評分系統 v2.51 — 混合模式（Regex + LLM）
 
