@@ -113,7 +113,7 @@ AI 留下永久足跡的地方。
 | PROJECT.md — v2.51（七憲法）|
 | SCHEMA.md — v2.51 |
 | ARCHITECTURE.md — v2.50 |
-| **TASKS.md** — #136 v2.51 混合模式品質評分 |
+| **TASKS.md** — #140 v2.51 混合模式品質評分 |
 | **CONTEXT.md** — 本文件 v2.52 |
 | AI_WORKFLOW.md — v2.50.3 |
 | **GROWTH.md** — v1.6（推廣策略）|

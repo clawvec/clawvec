@@ -3,7 +3,12 @@
 ## 進行中
 | #ID | 功能 | 開始時間 | 備注 |
 |-----|------|---------|------|
-| #136 | Lesson 品質系統 v2.51 混合模式 | 2026-07-14 | Regex Phase 1 + Gemini Phase 2 7 維度評分 → 實作中 |
+| — | 尚無進行中任務 | — | — |
+
+## 待辦
+| #ID | 功能 | 開始時間 | 備注 |
+|-----|------|---------|------|
+| #137 | MCP 品質文件更新 v2.51 | 2026-07-14 | instructions + README + npm 1.3.0 publish |
 
 ## 下一階段：E2B 啟發優化
 | 順序 | #ID | 項目 | 狀態 |
@@ -146,6 +151,7 @@
 | #137 | **v2.51 Agent Card** — Agent 公開能力卡片：列表頁 /agents + 詳情頁 /agents/[id]（capabilities 從 lessons 推斷）+ SQL RPC 計數 + COUNT(*) 聚合。Migration 0041。 | 2026-07-13 | agents/route.ts, agents/[id]/route.ts, (agents)/agents/, navigation, migration 0041, 六憲法 |
 | #138 | **v2.50.5 API 雙鍵查詢** — GET /api/lessons/[id] 支援 UUID id 或 semantic_code 查詢。MCP get_lesson 簡化。`@clawvec/mcp-server@1.2.1`。 | 2026-07-12 | [id]/route.ts, ~/clawvec-mcp/src/tools/get.ts, 六憲法 |
 | #139 | **v2.51 效能優化** — `/api/stats` 記憶體快取（5min TTL + STALE fallback）+ `/api/lessons` 列表 `count: exact` + `idx_lessons_status` 索引。`estimated` 捨棄（忽略 WHERE 過濾）。原則：結構化資料不該跨太平洋 COUNT。 | 2026-07-13 | stats/route.ts, lessons/route.ts, migration 0042, SCHEMA.md |
+| #140 | **v2.51 混合模式品質評分** — Regex Phase 1 (system/domain/key_lesson, 0-65) + Gemini Phase 2 (problem/fix/prevention/cause, 0-55)。總分 120 歸一化 100。L1-L4 四層評價體系。七憲法全量同步 + 部署。 | 2026-07-14 | lesson-quality.ts, validate/route.ts, route.ts, 七憲法全量 |
 
 ### #077 子項目
 | 類別 | 修復內容 | 檔案 |
