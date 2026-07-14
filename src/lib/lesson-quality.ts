@@ -1,7 +1,8 @@
 // lib/lesson-quality.ts
-// v2.51 — Hybrid mode: Regex Phase 1 (structure) + Gemini Flash Phase 2 (semantics)
-// 7 dimensions: system, domain, key_lesson (regex) + problem, fix, prevention, cause (LLM)
+// v2.51.3 — Hybrid mode: Regex Phase 1 (structure 0-60) + Gemini Flash Phase 2 (semantics 0-65)
+// 7+1 dimensions: system, domain, key_lesson (regex) + problem, fix, prevention, cause, system-match (LLM)
 // 4-layer evaluation: L1 writing quality → L2 operability → L3 relevance → L4 usefulness feedback
+// v2.51.3: 刀一 domain tools-only penalty, 刀二 system-problem match (Gemini Q9), 刀三 cause 5→10, system 25→20
 
 const GEMINI_FLASH = 'gemini-3.1-flash-lite'
 
@@ -16,39 +17,40 @@ const THEORETICAL_DOMAINS = new Set([
 ])
 
 export interface QualityIssue {
-  category: 'system' | 'domain' | 'problem' | 'key_lesson' | 'fix' | 'prevention' | 'cause' | 'severity'
+  category: 'system' | 'domain' | 'problem' | 'key_lesson' | 'fix' | 'prevention' | 'cause' | 'system_match' | 'severity'
   severity: 'error' | 'warning' | 'info'
   message: string
 }
 
 export interface QualityBreakdown {
-  system: number      // 0-25 (regex)
+  system: number      // 0-20 (regex) — v2.51.3: was 25
   domain: number      // 0-20 (regex)
   key_lesson: number  // 0-20 (regex)
   problem: number     // 0-25 (LLM)
-  fix: number         // 0-15 (LLM) — 🆕 v2.51
-  prevention: number  // 0-10 (LLM) — 🆕 v2.51
-  cause: number       // 0-5  (LLM) — 🆕 v2.51
+  fix: number         // 0-15 (LLM)
+  prevention: number  // 0-10 (LLM)
+  cause: number       // 0-10 (LLM) — v2.51.3: was 5
+  system_match: number // 0-5 (LLM) — 🆕 v2.51.3
 }
 
 export interface QualityPhase {
-  regex: number  // Phase 1 subtotal (0-65)
-  llm: number    // Phase 2 subtotal (0-55)
+  regex: number  // Phase 1 subtotal (0-60) — v2.51.3: was 65
+  llm: number    // Phase 2 subtotal (0-65) — v2.51.3: was 55
 }
 
 export interface QualityResult {
-  score: number           // 0-100 (normalized from 120)
+  score: number           // 0-100 (normalized from 125)
   max_score: number       // 100
-  raw_score: number       // 0-120 (raw total)
-  raw_max: number         // 120
+  raw_score: number       // 0-125 (raw total)
+  raw_max: number         // 125
   breakdown: QualityBreakdown
   phase: QualityPhase
   issues: QualityIssue[]
   summary: string
-  llmEnabled: boolean     // Whether Gemini was called
+  llmEnabled: boolean
 }
 
-// ── Phase 1: Regex structure scoring (3 dimensions, 0-65) ──────────────
+// ── Phase 1: Regex structure scoring (3 dimensions, 0-60) ──────────────
 
 interface RegexFields {
   system: string[]
@@ -66,22 +68,22 @@ export function scoreRegexPhase(fields: RegexFields): {
   const issues: QualityIssue[] = []
   const breakdown = { system: 0, domain: 0, key_lesson: 0 }
 
-  // ── System specificity (0-25) — v2.51: lowered from 0-30 to 0-25 ──
+  // ── System specificity (0-20) — v2.51.3: lowered from 0-25 ──
   const specificSystems = fields.system.filter(s => s !== 'general')
   const hasGeneral = fields.system.includes('general')
   if (specificSystems.length === 0) {
-    issues.push({ category: 'system', severity: 'error', message: 'system: only "general" — specify the actual system (e.g. "hermes", "vercel", "claude-code")' })
+    issues.push({ category: 'system', severity: 'error', message: 'system: only "general" — specify the actual system (e.g. "hermes", "postgresql", "docker")' })
     breakdown.system = 5
   } else if (specificSystems.length === 1) {
-    breakdown.system = hasGeneral ? 18 : 20
+    breakdown.system = hasGeneral ? 16 : 18
     if (hasGeneral) {
       issues.push({ category: 'system', severity: 'info', message: 'Consider removing "general" — specific systems help other agents find this' })
     }
   } else {
-    breakdown.system = 25
+    breakdown.system = 20
   }
 
-  // ── Domain concreteness (0-20) ──
+  // ── Domain concreteness (0-20) — v2.51.3: added tools-only penalty ──
   const realCount = fields.domain.filter(d => REAL_DOMAINS.has(d)).length
   const theoryCount = fields.domain.filter(d => THEORETICAL_DOMAINS.has(d)).length
 
@@ -91,6 +93,14 @@ export function scoreRegexPhase(fields: RegexFields): {
     breakdown.domain = theoryCount > 0 ? 15 : 18
     if (theoryCount > 0) {
       issues.push({ category: 'domain', severity: 'info', message: 'Mixed real/theory domains — consider dropping the theoretical tag' })
+    }
+    // 刀一: "tools" alone is too vague — 99% of cases need a second domain
+    if (fields.domain.length === 1 && fields.domain[0] === 'tools') {
+      breakdown.domain = Math.max(5, breakdown.domain - 5)
+      issues.push({
+        category: 'domain', severity: 'warning',
+        message: 'Domain is only "tools" — add a second domain (db, security, deploy, etc.). "tools" alone is too vague for accurate search.',
+      })
     }
   } else if (theoryCount > 0) {
     breakdown.domain = 5
@@ -126,19 +136,20 @@ export function scoreRegexPhase(fields: RegexFields): {
   return { breakdown, issues }
 }
 
-// ── Phase 2: Gemini LLM-as-Judge (4 dimensions, 0-55) ─────────────────
+// ── Phase 2: Gemini LLM-as-Judge (5 dimensions, 0-65) ─────────────────
 
 interface LLMScores {
-  problem: number     // 0-25
-  fix: number         // 0-15
-  prevention: number  // 0-10
-  cause: number       // 0-5
+  problem: number       // 0-25
+  fix: number           // 0-15
+  prevention: number    // 0-10
+  cause: number         // 0-10 — v2.51.3: was 5
+  systemMatch: number   // 0-5  — 🆕 v2.51.3
   issues: QualityIssue[]
 }
 
 /**
- * One Gemini call for all 4 semantic dimensions.
- * 8 YES/NO questions, weighted scoring.
+ * One Gemini call for all 5 semantic dimensions.
+ * 9 YES/NO questions, weighted scoring.
  */
 export async function llmJudgeAll(
   problem: string,
@@ -146,22 +157,25 @@ export async function llmJudgeAll(
   key_lesson: string,
   prevention: string,
   causeArr: string[] | undefined,
+  systemArr: string[],
 ): Promise<LLMScores> {
   const apiKey = process.env.GEMINI_API_KEY || ''
   if (!apiKey) {
     console.warn('[llmJudge] GEMINI_API_KEY not set — skipping LLM judge')
-    return { problem: 0, fix: 0, prevention: 0, cause: 0, issues: [] }
+    return { problem: 0, fix: 0, prevention: 0, cause: 0, systemMatch: 0, issues: [] }
   }
 
   const causeStr = (causeArr && causeArr.length > 0) ? causeArr.join('; ') : '(not provided)'
+  const systemStr = systemArr.join(', ')
 
-  const prompt = `Read this lesson and answer 8 questions with YES or NO only, one per line.
+  const prompt = `Read this lesson and answer 9 questions with YES or NO only, one per line.
 
 Problem: ${problem}
 Fix: ${fix}
 Key lesson: ${key_lesson}
 Prevention: ${prevention}
 Cause: ${causeStr}
+System tags: ${systemStr}
 
 Problem concreteness (Q1-Q3):
 1. Mentions time or quantifiable loss? (hours, days, money, data/users)
@@ -179,11 +193,14 @@ Prevention specificity (Q6-Q7):
 Cause depth (Q8):
 8. Points to root cause? (not just symptom)
 
+System-problem match (Q9):
+9. Does system[] include the actual platform where this happened? (Read the problem: if it mentions PostgreSQL, Docker, Firebase, etc. — is that name present in system[]? "claude-code" alone does NOT count unless the bug is specific to Claude Code.)
+
 Answer (YES/NO only, one per line):`
 
   try {
     const controller = new AbortController()
-    const timer = setTimeout(() => controller.abort(), 5000)
+    const timer = setTimeout(() => controller.abort(), 7000)
 
     const resp = await fetch(
       `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_FLASH}:generateContent?key=${apiKey}`,
@@ -192,7 +209,7 @@ Answer (YES/NO only, one per line):`
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           contents: [{ role: 'user', parts: [{ text: prompt }] }],
-          generationConfig: { temperature: 0, maxOutputTokens: 50, topP: 1 },
+          generationConfig: { temperature: 0, maxOutputTokens: 60, topP: 1 },
         }),
         signal: controller.signal,
       }
@@ -201,7 +218,7 @@ Answer (YES/NO only, one per line):`
 
     if (!resp.ok) {
       console.error(`[llmJudge] Gemini returned ${resp.status}: ${await resp.text().then(t => t.slice(0, 100))}`)
-      return { problem: 0, fix: 0, prevention: 0, cause: 0, issues: [] }
+      return { problem: 0, fix: 0, prevention: 0, cause: 0, systemMatch: 0, issues: [] }
     }
 
     const data = await resp.json()
@@ -217,8 +234,10 @@ Answer (YES/NO only, one per line):`
     const fixScore = Math.min(15, yesAt(3) * 8 + yesAt(4) * 7)
     // Q6-Q7: prevention (5+5 = 10)
     const preventionScore = Math.min(10, yesAt(5) * 5 + yesAt(6) * 5)
-    // Q8: cause (5)
-    const causeScore = yesAt(7) * 5
+    // Q8: cause (10) — v2.51.3: increased from 5
+    const causeScore = yesAt(7) * 10
+    // Q9: system-match (5) — 🆕 v2.51.3
+    const systemMatchScore = yesAt(8) * 5
 
     const issues: QualityIssue[] = []
     if (fixScore < 8) {
@@ -230,17 +249,24 @@ Answer (YES/NO only, one per line):`
     if (causeScore === 0) {
       issues.push({ category: 'cause', severity: 'info', message: 'Consider adding root cause analysis — what caused this, not just what happened.' })
     }
+    if (systemMatchScore === 0 && systemArr.length === 1 && systemArr[0] === 'claude-code') {
+      issues.push({
+        category: 'system_match', severity: 'warning',
+        message: 'System is only "claude-code" but the problem mentions another platform (PostgreSQL, Docker, Firebase, etc.). Add the actual system to system[] for accurate search.',
+      })
+    }
 
     return {
       problem: problemScore,
       fix: fixScore,
       prevention: preventionScore,
       cause: causeScore,
+      systemMatch: systemMatchScore,
       issues,
     }
   } catch (err) {
     console.error('[llmJudge] Gemini call failed:', err)
-    return { problem: 0, fix: 0, prevention: 0, cause: 0, issues: [] }
+    return { problem: 0, fix: 0, prevention: 0, cause: 0, systemMatch: 0, issues: [] }
   }
 }
 
@@ -273,9 +299,10 @@ export async function scoreLessonQualityHybrid(fields: {
     fields.key_lesson,
     fields.prevention || '',
     fields.cause,
+    fields.system,
   )
 
-  const llmEnabled = (llm.problem + llm.fix + llm.prevention + llm.cause) > 0
+  const llmEnabled = (llm.problem + llm.fix + llm.prevention + llm.cause + llm.systemMatch) > 0
 
   const breakdown: QualityBreakdown = {
     system: regex.breakdown.system,
@@ -285,16 +312,17 @@ export async function scoreLessonQualityHybrid(fields: {
     fix: llm.fix,
     prevention: llm.prevention,
     cause: llm.cause,
+    system_match: llm.systemMatch,
   }
 
   const phase: QualityPhase = {
     regex: regex.breakdown.system + regex.breakdown.domain + regex.breakdown.key_lesson,
-    llm: llm.problem + llm.fix + llm.prevention + llm.cause,
+    llm: llm.problem + llm.fix + llm.prevention + llm.cause + llm.systemMatch,
   }
 
   const rawScore = phase.regex + phase.llm
-  // Normalize 0-120 → 0-100
-  const score = Math.round((rawScore / 120) * 100)
+  // Normalize 0-125 → 0-100
+  const score = Math.round((rawScore / 125) * 100)
 
   const allIssues = [...regex.issues, ...llm.issues]
 
@@ -319,7 +347,7 @@ export async function scoreLessonQualityHybrid(fields: {
     score,
     max_score: 100,
     raw_score: rawScore,
-    raw_max: 120,
+    raw_max: 125,
     breakdown,
     phase,
     issues: allIssues,
@@ -359,7 +387,6 @@ export function scoreLessonQuality(fields: {
     severity: fields.severity,
   })
 
-  // Legacy regex-based problem scoring
   let concreteScore = 0
   for (const pattern of CONCRETE_INDICATORS) {
     if (pattern.test(fields.problem)) concreteScore += 5
@@ -384,15 +411,16 @@ export function scoreLessonQuality(fields: {
     fix: 0,
     prevention: 0,
     cause: 0,
+    system_match: 0,
   }
 
   const phase: QualityPhase = {
     regex: regex.breakdown.system + regex.breakdown.domain + regex.breakdown.key_lesson,
-    llm: 0,  // legacy: no LLM
+    llm: 0,
   }
 
-  const rawScore = phase.regex + problemScore  // 65 + 25 = 90 max
-  const score = Math.round((rawScore / 90) * 100)  // normalize 0-90 → 0-100
+  const rawScore = phase.regex + problemScore
+  const score = Math.round((rawScore / 85) * 100)
 
   if (fields.severity === 'low' && breakdown.problem < 10 && breakdown.domain < 10) {
     regex.issues.push({ category: 'severity', severity: 'info', message: 'Severity "low" + vague content — if this is worth recording, is it really low?' })
@@ -413,7 +441,7 @@ export function scoreLessonQuality(fields: {
     score,
     max_score: 100,
     raw_score: rawScore,
-    raw_max: 90,
+    raw_max: 85,
     breakdown,
     phase,
     issues: regex.issues,

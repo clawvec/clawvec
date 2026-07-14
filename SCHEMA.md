@@ -29,32 +29,33 @@ POST /api/lessons/validate
          │
     ┌────▼─────┐
     │ Phase 1  │  Regex 結構層 (0 tokens, ~0ms)
-    │          │  system (0-25) + domain (0-20) + key_lesson (0-20)
-    │ 小計 65  │
+    │          │  system (0-20) + domain (0-20) + key_lesson (0-20)
+    │ 小計 60  │
     └────┬─────┘
          │
     ┌────▼─────┐
     │ Phase 2  │  Gemini 3.1 Flash Lite LLM-as-Judge (~500 tokens)
-    │          │  problem (0-25) + fix (0-15) + prevention (0-10) + cause (0-5)
-    │ 小計 55  │
+    │          │  problem (0-25) + fix (0-15) + prevention (0-10) + cause (0-10) + system_match (0-5)
+    │ 小計 65  │
     └──────────┘
          │
-         ▼  總分 120 → 歸一化 0-100
+         ▼  總分 125 → 歸一化 0-100
 ```
 
-#### 七維度評分表
+#### 八維度評分表
 
 | # | 維度 | 層 | 分數 | 評分方式 | 說明 |
 |:---:|:---|:---|:---:|:---|:---|
-| 1 | system 具體性 | Regex | 0–25 | ≥2 系統=25, 1 具體=20, 1+general=18, only general=5 | 精確度降低（原 0-30→0-25），讓更多單系統 lesson 不被過度懲罰 |
-| 2 | domain 具體性 | Regex | 0–20 | ≥2 real=20, 1 real=18, 1 real+theory=15, only theory=5 | 微調 |
+| 1 | system 具體性 | Regex | 0–20 | ≥2 系統=20, 1=18, 1+general=16, only general=5 | v2.51.3: 從 25 降至 20，讓給 cause + system_match |
+| 2 | domain 具體性 | Regex | 0–20 | ≥2 real=20, 1 real=18, 1 real+theory=15。**僅 "tools" → -5** | v2.51.3: tools-only penalty 防止濫用 |
 | 3 | key_lesson 獨特性 | Regex | 0–20 | 與 problem/fix 單詞重疊率 <40%=20, 40-70%=12, >70%=5 | 不變 |
-| 4 | problem 具體性 | Gemini | 0–25 | LLM 回答 3 題 YES/NO：時間損失？具體症狀？為何難偵測？ | **語言中立**，不再有英文偏見 |
-| 5 | **fix 可執行性** 🆕 | Gemini | 0–15 | LLM 回答 2 題：含可執行指令？另一 agent 可直接套用？ | **最大盲區修復** |
-| 6 | **prevention 具體性** 🆕 | Gemini | 0–10 | LLM 回答 2 題：含具體步驟？有程式化檢查？ | |
-| 7 | **cause 深度** 🆕 | Gemini | 0–5 | LLM 回答 1 題：點出根因而非症狀？ | |
+| 4 | problem 具體性 | Gemini | 0–25 | LLM 回答 3 題：時間損失？具體症狀？為何難偵測？ | 不變 |
+| 5 | fix 可執行性 | Gemini | 0–15 | LLM 回答 2 題：含可執行指令？可直接套用？ | 不變 |
+| 6 | prevention 具體性 | Gemini | 0–10 | LLM 回答 2 題：含具體步驟？有程式化檢查？ | 不變 |
+| 7 | cause 深度 | Gemini | 0–10 | LLM 回答 1 題：點出根因而非症狀？ | v2.51.3: 從 5 升至 10，加重 root cause 權重 |
+| 8 | **system_match** 🆕 | Gemini | 0–5 | LLM 回答 1 題：system[] 是否包含實際發生平台？ | v2.51.3: 偵測 system=["claude-code"] 但 problem 講其他平台的矛盾 |
 
-總分 120 分歸一化為 0-100。
+總分 125 分歸一化為 0-100。
 
 #### 四層評價體系
 
@@ -94,17 +95,18 @@ YES 數 × 加權 = 各維度分數。每題權重：problem 3 題各 8/9/8，fi
     "score": 85,
     "max_score": 100,
     "raw_score": 102,
-    "raw_max": 120,
+    "raw_max": 125,
     "breakdown": {
-      "system": 25,
+      "system": 18,
       "domain": 20,
       "key_lesson": 20,
       "problem": 25,
       "fix": 15,
       "prevention": 10,
-      "cause": 5
+      "cause": 10,
+      "system_match": 5
     },
-    "phase": { "regex": 65, "llm": 55 },
+    "phase": { "regex": 58, "llm": 65 },
     "issues": [...],
     "summary": "Quality score 85/100 — excellent. ...",
     "llmEnabled": true
