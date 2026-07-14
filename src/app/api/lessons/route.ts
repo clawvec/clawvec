@@ -27,8 +27,8 @@ const GET_RATE_LIMIT_MAX_LIMIT = 50    // cap ?limit= param
 const getRateStore = new Map<string, { count: number; resetAt: number }>()
 
 // v2.49 — Strip sensitive content fields from list results
-const LIST_SELECT = 'id, semantic_code, domain, system, type, severity, problem, usefulness_score, verified_count, status, variant_of, created_by, created_at, source'
-const SENSITIVE_FIELDS = ['fix', 'key_lesson', 'prevention', 'cause', 'contributions', 'embedding', 'embedding_text']
+const LIST_SELECT = 'id, semantic_code, domain, system, type, severity, problem, fix, usefulness_score, verified_count, status, variant_of, created_by, created_at, source'
+const SENSITIVE_FIELDS = ['key_lesson', 'prevention', 'cause', 'contributions', 'embedding', 'embedding_text']
 
 function stripSensitive<T extends Record<string, unknown>>(items: T[]): T[] {
   return items.map(item => {
