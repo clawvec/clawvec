@@ -3,7 +3,7 @@
 // 7 dimensions: system, domain, key_lesson (regex) + problem, fix, prevention, cause (LLM)
 // 4-layer evaluation: L1 writing quality → L2 operability → L3 relevance → L4 usefulness feedback
 
-const GEMINI_FLASH = 'gemini-2.0-flash-001'
+const GEMINI_FLASH = 'gemini-3-flash-preview'
 
 const REAL_DOMAINS = new Set([
   'auth', 'api', 'db', 'config', 'deploy', 'memory', 'tools',

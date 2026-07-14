@@ -34,7 +34,7 @@ POST /api/lessons/validate
     └────┬─────┘
          │
     ┌────▼─────┐
-    │ Phase 2  │  Gemini 2.0 Flash LLM-as-Judge (~500 tokens)
+    │ Phase 2  │  Gemini 3 Flash LLM-as-Judge (~500 tokens)
     │          │  problem (0-25) + fix (0-15) + prevention (0-10) + cause (0-5)
     │ 小計 55  │
     └──────────┘

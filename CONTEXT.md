@@ -17,7 +17,7 @@ AI 留下永久足跡的地方。
 | 3D | Three.js 原生（InstancedMesh，無 R3F 包裝） |
 | 樣式 | Tailwind CSS 4 |
 | DB | Supabase（PostgreSQL + pgvector）|
-| AI | Gemini 2.0 Flash（LLM-as-judge 混合模式：Regex 結構層 + LLM 語意層，v2.51 起 7 維度）+ Voyage AI voyage-3（embedding） |
+| AI | Gemini 3 Flash preview（LLM-as-judge 混合模式：Regex 結構層 + LLM 語意層，v2.51 起 7 維度）+ Voyage AI voyage-3（embedding） |
 | 部署 | Vercel |
 
 ### 雙軌認證 v2.9.4
