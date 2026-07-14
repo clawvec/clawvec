@@ -11,7 +11,7 @@ import { scoreLessonQualityHybrid } from '@/lib/lesson-quality'
 const MAX_DOMAIN_ITEMS = 3
 const MAX_PROBLEM_CHARS = 500
 const MAX_FIX_CHARS = 1000
-const MAX_KEY_LESSON_CHARS = 250
+const MAX_KEY_LESSON_CHARS = 280
 const MAX_PREVENTION_CHARS = 500
 const MIN_KEY_LESSON_CHARS = 30
 const MIN_PREVENTION_CHARS = 20
@@ -83,7 +83,7 @@ export async function POST(req: NextRequest) {
     else if (fix.length > MAX_FIX_CHARS)
       formatErrors.push(`fix: max ${MAX_FIX_CHARS} chars (${fix.length} given)`)
     if (!key_lesson || typeof key_lesson !== 'string')
-      formatErrors.push('key_lesson: required (30-250 chars)')
+      formatErrors.push('key_lesson: required (30-280 chars)')
     else if (key_lesson.length < MIN_KEY_LESSON_CHARS)
       formatErrors.push(`key_lesson: min ${MIN_KEY_LESSON_CHARS} chars (${key_lesson.length} given)`)
     else if (key_lesson.length > MAX_KEY_LESSON_CHARS)

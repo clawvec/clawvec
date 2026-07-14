@@ -14,7 +14,7 @@ const AGENT_COOLDOWN_HOURS = 0
 const MAX_DOMAIN_ITEMS = 3
 const MAX_PROBLEM_CHARS = 500
 const MAX_FIX_CHARS = 1000
-const MAX_KEY_LESSON_CHARS = 250
+const MAX_KEY_LESSON_CHARS = 280
 const MAX_PREVENTION_CHARS = 500
 const MIN_KEY_LESSON_CHARS = 30
 const MIN_PREVENTION_CHARS = 20
@@ -172,7 +172,7 @@ const SENSITIVE_PATTERNS = [
 function sanitizeText(text: string): string {
   return text
     .replace(/<[^>]*>/g, '')
-    .replace(/[`*_~\[\]()#]/g, '')
+    .replace(/[`*~\n[\\]()#]/g, '')  // preserve _ for env var names / config keys (v2.51.1)
     .replace(/javascript:/gi, '')
     .replace(/on\w+=/gi, '')
     .trim()
@@ -211,8 +211,11 @@ function generateEmbeddingText(lesson: Record<string, unknown>): string {
 // Not compliant with full ULID spec (80-bit random), but sufficient for current throughput.
 function generateSemanticCode(domain: string[], type: string): string {
   const domainPart = domain[0]?.toUpperCase()?.replace(/[^A-Z0-9]/g, '') || 'UNKNOWN'
-  const typePart = type?.toUpperCase()?.replace(/[^A-Z0-9]/g, '-')?.replace(/-+/g, '-') || 'ERROR'
-  // ULID: time-encoded, collision-free in same millisecond
+  let typePart = type?.toUpperCase()?.replace(/[^A-Z0-9]/g, '-')?.replace(/-+/g, '-') || 'ERROR'
+  // v2.51.1: avoid double prefix when type starts with domain (e.g. domain=api, type=api-error → API-ERROR, not API-API-ERROR)
+  if (typePart.startsWith(domainPart + '-')) {
+    typePart = typePart.slice(domainPart.length + 1)
+  }
   const ts = Date.now().toString(36).toUpperCase()
   const rand = Math.random().toString(36).substring(2, 6).toUpperCase()
   return `${domainPart}-${typePart}-${ts}${rand}`
@@ -293,7 +296,7 @@ async function generateEmbedding(text: string, _inputType?: string): Promise<num
 function validateLessonBody(body: Record<string, unknown>): string | null {
   // key_lesson
   if (!body.key_lesson || typeof body.key_lesson !== 'string') {
-    return 'key_lesson is required (30-250 chars). Write one sentence: what did this teach you?'
+    return 'key_lesson is required (30-280 chars). Write one sentence: what did this teach you?'
   }
   const kl = sanitizeText(body.key_lesson)
   if (kl.length < MIN_KEY_LESSON_CHARS) {
