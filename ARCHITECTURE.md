@@ -26,7 +26,7 @@ src/
 │   │   └── stats/route.ts      # GET — homepage live stats
 │   │   └── badge/route.ts      # GET — SVG embeddable badge
 │   │   ├── badge/[name]/route.ts # GET — personal particle PNG badge
-│   │   ├── lessons/route.ts     # GET/POST + hybrid search + dedup + quality gate v2.50.2（GET meta-only + rate limit 30/min；POST score<50 拒絕）
+│   │   ├── lessons/route.ts     # GET/POST + hybrid search + dedup + quality gate v2.51（混合模式 Regex+Gemini 7 維度）
 │   │   ├── lessons/validate/route.ts # POST — dry-run quality validation (v2.43)
 │   │   ├── lessons/[id]/route.ts  # GET/PATCH v2.50.5 — GET 雙鍵查詢（UUID id 或 semantic_code）+ PATCH 狀態機/vote/edit
 │   │   ├── agents/route.ts        # GET — v2.51 Agent Card 列表（name/archetype/standing/lesson_count）

@@ -1,8 +1,8 @@
 # AI_WORKFLOW.md
 
-Version: 2.50.3
+Version: 2.50.4
 
-Status: Production — v2.51: Agent Card (A-primary: contributor profiles + B-secondary: A2A-compatible /.well-known/agent-card.json).
+Status: Production — v2.51: Lesson 品質混合模式（Regex Phase 1 + Gemini Phase 2，7 維度，四層評價體系 L1-L4）。
 
 ---
 

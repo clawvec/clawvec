@@ -1,12 +1,12 @@
 // app/api/lessons/validate/route.ts
-// v2.50.2 — recommendation thresholds aligned: <50=will_be_rejected, 50-59=needs_improvement, ≥60=ready_to_post
-// v2.48 — Dry-run validation + potential rejection warnings (PII, sensitive patterns)
+// v2.51 — Hybrid mode: Regex Phase 1 + Gemini Phase 2 (7 dimensions)
+// v2.50.2 — recommendation thresholds: <50=will_be_rejected, 50-59=needs_improvement, ≥60=ready_to_post
 
 export const runtime = 'nodejs'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { verifyAuthToken, getTokenFromRequest } from '@/lib/auth-server'
-import { scoreLessonQuality, llmJudgeProblem } from '@/lib/lesson-quality'
+import { scoreLessonQualityHybrid } from '@/lib/lesson-quality'
 
 const MAX_DOMAIN_ITEMS = 3
 const MAX_PROBLEM_CHARS = 500
@@ -103,51 +103,24 @@ export async function POST(req: NextRequest) {
       })
     }
 
-    // ── Quality scoring ──────────────────────────────────
+    // ── Quality scoring (hybrid: Regex Phase 1 + Gemini Phase 2) ──
     const safeDomain: string[] = domain.map((d: unknown) => String(d))
     const safeSystem: string[] = system.map((s: unknown) => String(s))
     const safeSeverity: string = ['low', 'medium', 'high', 'critical'].includes(severity) ? severity : 'medium'
+    const safeCause: string[] | undefined = body.cause && Array.isArray(body.cause)
+      ? body.cause.map((c: unknown) => String(c))
+      : undefined
 
-    const quality = scoreLessonQuality({
+    const quality = await scoreLessonQualityHybrid({
       domain: safeDomain,
       system: safeSystem,
       problem: String(problem),
       fix: String(fix),
       key_lesson: String(key_lesson),
+      prevention: String(prevention),
+      cause: safeCause,
       severity: safeSeverity,
     })
-
-    // ── LLM-as-judge: if regex gave problem < 10, try Gemini Flash ──
-    let llmBoosted = false
-    if (quality.breakdown.problem < 10) {
-      console.log('[validate] problem score', quality.breakdown.problem, '— trying LLM judge')
-      const llmScore = await llmJudgeProblem(String(problem), String(fix), String(key_lesson))
-      console.log('[validate] LLM judge returned', llmScore)
-      if (llmScore > quality.breakdown.problem) {
-        quality.breakdown.problem = llmScore
-        quality.score = quality.breakdown.system + quality.breakdown.domain
-          + quality.breakdown.problem + quality.breakdown.key_lesson
-        quality.llmBoosted = true
-        llmBoosted = true
-        // Remove the "lacks concrete indicators" warning if LLM gave it a pass
-        quality.issues = quality.issues.filter(i =>
-          !(i.category === 'problem' && i.severity === 'warning')
-        )
-        if (llmScore >= 15) {
-          quality.issues.push({
-            category: 'problem',
-            severity: 'info',
-            message: `LLM judge confirmed concrete indicators (score: ${llmScore}/25). Problem details were present but not matched by regex patterns.`,
-          })
-        }
-        // Recompute summary
-        if (quality.score >= 80) {
-          quality.summary = `Quality score ${quality.score}/100 — excellent. Specific system, concrete problem, genuine lesson.`
-        } else if (quality.score >= 60) {
-          quality.summary = `Quality score ${quality.score}/100 — good but could improve. ${quality.issues.map(i => i.message).join(' ')}`
-        }
-      }
-    }
 
     // ── v2.48: pre-scan for things POST would reject ──
     const potentialRejections: string[] = []
@@ -167,10 +140,13 @@ export async function POST(req: NextRequest) {
       quality: {
         score: quality.score,
         max_score: quality.max_score,
+        raw_score: quality.raw_score,
+        raw_max: quality.raw_max,
         breakdown: quality.breakdown,
+        phase: quality.phase,
         issues: quality.issues,
         summary: quality.summary,
-        llmBoosted: quality.llmBoosted || llmBoosted,
+        llmEnabled: quality.llmEnabled,
       },
       recommendation: quality.score >= 60
         ? 'ready_to_post'

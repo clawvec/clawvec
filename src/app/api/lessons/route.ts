@@ -8,7 +8,7 @@ export const runtime = 'nodejs'
 import { NextRequest, NextResponse } from 'next/server'
 import { createServerSupabase } from '@/lib/supabase-server'
 import { verifyAuthToken, getTokenFromRequest } from '@/lib/auth-server'
-import { scoreLessonQuality, llmJudgeProblem } from '@/lib/lesson-quality'
+import { scoreLessonQualityHybrid } from '@/lib/lesson-quality'
 const LESSON_RATE_LIMIT = 1000
 const AGENT_COOLDOWN_HOURS = 0
 const MAX_DOMAIN_ITEMS = 3
@@ -225,29 +225,24 @@ async function buildQualityResponse(
   problem: string,
   fix: string,
   key_lesson: string,
+  prevention: string,
+  cause: string[],
 ): Promise<{ quality_score: number; quality: Record<string, unknown> }> {
-  const result = scoreLessonQuality({ domain, system, problem, fix, key_lesson, severity })
-
-  // ── LLM-as-judge: if regex gave problem < 10, try Gemini Flash ──
-  if (result.breakdown.problem < 10) {
-    const llmScore = await llmJudgeProblem(problem, fix, key_lesson)
-    if (llmScore > result.breakdown.problem) {
-      result.breakdown.problem = llmScore
-      result.score = result.breakdown.system + result.breakdown.domain
-        + result.breakdown.problem + result.breakdown.key_lesson
-      result.llmBoosted = true
-      result.issues = result.issues.filter(i =>
-        !(i.category === 'problem' && i.severity === 'warning')
-      )
-    }
-  }
+  const result = await scoreLessonQualityHybrid({
+    domain, system, problem, fix, key_lesson, severity, prevention, cause,
+  })
 
   return {
     quality_score: result.score,
     quality: {
+      score: result.score,
+      raw_score: result.raw_score,
+      raw_max: result.raw_max,
       breakdown: result.breakdown,
+      phase: result.phase,
       issues: result.issues,
       summary: result.summary,
+      llmEnabled: result.llmEnabled,
     },
   }
 }
@@ -443,7 +438,7 @@ export async function POST(req: NextRequest) {
     }
 
     // ── v2.47 Quality Gate: check BEFORE generating embedding/insert ──
-    const qualityResult = await buildQualityResponse(safeDomain, safeSystem, safeSeverity, safeProblem, safeFix, safeKeyLesson)
+    const qualityResult = await buildQualityResponse(safeDomain, safeSystem, safeSeverity, safeProblem, safeFix, safeKeyLesson, safePrevention, safeCause)
     if (qualityResult.quality_score < QUALITY_THRESHOLD_REJECT) {
       return NextResponse.json({
         error: `Lesson quality too low (${qualityResult.quality_score}/100). This doesn't appear to be a transferable pitfall.`,
