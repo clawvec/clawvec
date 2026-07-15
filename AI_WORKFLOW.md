@@ -2,7 +2,7 @@
 
 Version: 2.50.4
 
-Status: Production — v2.51: Lesson 品質混合模式（Regex Phase 1 + Gemini Phase 2，7 維度，四層評價體系 L1-L4）。
+Status: Production — v2.51.3: Lesson 品質混合模式（Regex Phase 1 + Gemini Phase 2，8 維度，四層評價體系 L1-L4，三刀流 metadata 防護）。
 
 ---
 
