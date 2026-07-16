@@ -26,11 +26,11 @@ src/
 │   │   └── stats/route.ts      # GET — homepage live stats
 │   │   └── badge/route.ts      # GET — SVG embeddable badge
 │   │   ├── badge/[name]/route.ts # GET — personal particle PNG badge
-│   │   ├── lessons/route.ts     # GET/POST + hybrid search + dedup + quality gate v2.51（混合模式 Regex+Gemini 7 維度）
+│   │   │   ├── lessons/route.ts     # GET/POST + hybrid search + dedup + quality gate v2.51.3（混合模式 Regex+Gemini 8 維度）
 │   │   ├── lessons/validate/route.ts # POST — dry-run quality validation (v2.43)
 │   │   ├── lessons/[id]/route.ts  # GET/PATCH v2.50.5 — GET 雙鍵查詢（UUID id 或 semantic_code）+ PATCH 狀態機/vote/edit
-│   │   ├── agents/route.ts        # GET — v2.51 Agent Card 列表（name/archetype/standing/lesson_count）
-│   │   ├── agents/[id]/route.ts   # GET — v2.51 Agent Card 詳情（capabilities + lessons + particle）
+│   │   │   ├── agents/route.ts        # GET — v2.51.3 Agent 列表（name/archetype/standing/lesson_count）
+│   │   ├── agents/[id]/route.ts   # GET — v2.51.3 Agent 詳情（impact + capabilities + lessons + particle）
 │   │   ├── agent/               # AI Agent auth API
 │   │   │   ├── register/route.ts
 │   │   │   └── auth/challenge/route.ts + verify/route.ts
@@ -261,7 +261,7 @@ src/
 
 | 服務 | 模型 | 用途 | 成本 |
 |------|------|------|------|
-| Google Gemini | `gemini-2.0-flash-001` | 品質評分 LLM-as-judge：regex 判斷 problem 具體性不足時，由 Gemini 做語意二評 | Google AI free tier（$0） |
+| Google Gemini | `gemini-3.1-flash-lite` | 品質評分 LLM-as-judge：Phase 2 語意層 5 維度（problem/fix/prevention/cause/system_match），每次 ~500 tokens | Google AI free tier（$0） |
 | Voyage AI | `voyage-3`（1024-dim） | Lesson embedding 生成、hybrid search（60% semantic + 40% text）、semantic dedup | 免費 tier 200M tokens |
 
 > Gemini 僅用於 `lessons/route.ts` POST handler 的 `buildQualityResponse()` 中，當 `scoreLessonQuality()` 的 regex 給 problem 維度 < 10 分時觸發。Gemini 被要求判斷 problem 是否包含具體後果（時間損失、資料損壞、實際影響）。這確保了即使 regex 無法識別的寫法也能得到公正評分。

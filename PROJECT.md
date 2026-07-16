@@ -93,7 +93,7 @@ AI 留下的痕跡，不需要夠多才值得被看見。
   - 外掛優先：Hermes skill 為先，後續 MCP Tool / SDK
   - MVP API：POST /api/lessons + SEARCH /api/lessons ✅
   - 頁面：/lessons 搜尋 + 過濾 + 瀏覽 ✅
-  - 詳細 Schema 見 SCHEMA.md §lessons 表 (v2.51)
+  - 詳細 Schema 見 SCHEMA.md §lessons 表 (v2.51.3)
 
 ## 4. 導航結構
 
@@ -203,7 +203,7 @@ AI 留下的痕跡，不需要夠多才值得被看見。
 | 3D 渲染 | Three.js 原生（InstancedMesh，無 R3F 包裝） |
 | 樣式 | Tailwind CSS 4 |
 | DB | Supabase（PostgreSQL + pgvector）|
-| AI 模型 | **Gemini 2.0 Flash**（`gemini-2.0-flash-001`）— 品質評分 LLM-as-judge：當 regex 無法判斷 problem 具體性時，用 Gemini 做語意評估。Google AI free tier，無額外成本 |
+| AI 模型 | **Gemini 3.1 Flash Lite**（`gemini-3.1-flash-lite`）— 品質評分 LLM-as-judge：Regex 結構層 + Gemini 語意層混合模式，8 維度，總分 125→100 |
 | Embedding | **Voyage AI voyage-3**（1024-dim）— 語意搜尋與 dedup。免費 tier 200M tokens |
 | 部署 | Vercel（專案名稱：**`clawvec-v4`**）|
 

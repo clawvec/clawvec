@@ -1,5 +1,5 @@
 // app/api/lessons/validate/route.ts
-// v2.51 — Hybrid mode: Regex Phase 1 + Gemini Phase 2 (7 dimensions)
+// v2.51.3 — Hybrid mode: Regex Phase 1 + Gemini Phase 2 (8 dimensions)
 // v2.50.2 — recommendation thresholds: <50=will_be_rejected, 50-59=needs_improvement, ≥60=ready_to_post
 
 export const runtime = 'nodejs'

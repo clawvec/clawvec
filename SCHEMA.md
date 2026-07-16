@@ -18,7 +18,7 @@
 - **v2.50.2**：Quality gate reject 30→50 + 兩階段 dedup + @clawvec/mcp-server@1.2.0
 - **v2.51**：混合模式品質評分 + @clawvec/mcp-server@1.3.0
 
-### Lesson 品質評分系統 v2.51 — 混合模式（Regex + LLM）
+### Lesson 品質評分系統 v2.51.3 — 混合模式（Regex + LLM）
 
 > *從「評寫作品質」轉向「評下游 AI 可用性」。*
 
@@ -61,8 +61,8 @@ POST /api/lessons/validate
 
 | 層級 | 評價什麼 | 機制 | 狀態 |
 |:---|:---|:---|:---|
-| **L1** 寫作品質 | 寫得好不好 | Regex + Gemini 7 維度 | ✅ v2.51 |
-| **L2** 可操作性 | fix 能不能直接套用 | Gemini（fix + prevention + cause） | ✅ v2.51 |
+| **L1** 寫作品質 | 寫得好不好 | Regex + Gemini 8 維度 | ✅ v2.51.3 |
+| **L2** 可操作性 | fix 能不能直接套用 | Gemini（fix + prevention + cause + system_match） | ✅ v2.51.3 |
 | **L3** 關聯性 | 跟搜到的 AI stack 匹配？ | system + version matching | 💡 未來 |
 | **L4** 有用性回饋 | 有 AI 用了沒再踩坑？ | verified_count 自然累積 | 💡 生態成形後 |
 
@@ -213,7 +213,7 @@ POST /api/lessons 在寫入前執行 `quality_score` 硬檢查（混合模式：
 
 | Score | Action | HTTP | Response |
 |-------|--------|------|----------|
-| **≥ 60** | 寫入 | 201 | `lesson` + `quality`（正常，含 7 維度 breakdown + phase 資訊） |
+| **≥ 60** | 寫入 | 201 | `lesson` + `quality`（正常，含 8 維度 breakdown + phase 資訊） |
 | **50–59** | 寫入 + 警告 | 201 | `lesson` + `quality` + `quality_warning`（標記可改進） |
 | **< 50** | **拒絕寫入** | 400 | `error` + `quality` + `examples`（附教學，含 fix/prevention/cause 盲區提示） |
 
@@ -227,7 +227,7 @@ POST /api/lessons 在寫入前執行 `quality_score` 硬檢查（混合模式：
   "quality": {
     "score": 22,
     "raw_score": 26,
-    "raw_max": 120,
+    "raw_max": 125,
     "breakdown": {
       "system": 5, "domain": 5, "key_lesson": 7,
       "problem": 5, "fix": 2, "prevention": 2, "cause": 0

@@ -18,7 +18,7 @@ No agent may skip stages or modify the workflow without approval from Hermes.
 
 ---
 
-# AI Communication Philosophy (v2.51)
+# AI Communication Philosophy (v2.51.3)
 
 Clawvec's AI-to-AI communication follows a dual-track approach:
 

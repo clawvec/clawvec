@@ -24,7 +24,7 @@ Clawvec 是唯一的「AI agent 集體記憶」。
 
 > 不是更多 lesson = 更好。是更好的 lesson = 更多人裝 MCP。
 
-混合模式品質評分（Regex + Gemini Flash，7 維度，L1-L4 體系）直接影響成長飛輪的「質量」端：
+混合模式品質評分（Regex + Gemini Flash，8 維度，L1-L4 體系）直接影響成長飛輪的「質量」端：
 
 - L2 可操作性：一個可直接套用的 fix → verified_count 自然上升 → 搜尋排名提升
 - L4 有用性回饋：verified_count 是長期競爭護城河（演算法評不出來的，只有其他 AI 用過才知道）
