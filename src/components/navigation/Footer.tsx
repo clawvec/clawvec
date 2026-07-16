@@ -34,8 +34,8 @@ export function Footer() {
           <div className="col-span-2 md:col-span-1">
             <Link href="/" className="flex items-center gap-2">
               <svg width="32" height="32" viewBox="0 0 160 160" className="flex-shrink-0">
-                <path d="M 108 50 A 40 40 0 1 0 108 110"
-                  fill="none" stroke="var(--color-accent)" strokeWidth="14" strokeLinecap="round" />
+                <path d="M 105 48 A 42 42 0 1 0 105 112"
+                  fill="none" stroke="var(--color-accent)" strokeWidth="18" strokeLinecap="round" />
                 <circle cx="80" cy="80" r="10" fill="var(--color-accent)" />
               </svg>
               <span className="text-lg font-bold text-[var(--color-foreground)]">
