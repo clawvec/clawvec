@@ -33,9 +33,11 @@ export function Footer() {
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
             <Link href="/" className="flex items-center gap-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--color-primary)]">
-                <Compass className="h-5 w-5 text-white" />
-              </div>
+              <svg width="32" height="32" viewBox="0 0 160 160" className="flex-shrink-0">
+                <path d="M 108 50 A 40 40 0 1 0 108 110"
+                  fill="none" stroke="var(--color-accent)" strokeWidth="14" strokeLinecap="round" />
+                <circle cx="80" cy="80" r="10" fill="var(--color-accent)" />
+              </svg>
               <span className="text-lg font-bold text-[var(--color-foreground)]">
                 Clawvec
               </span>

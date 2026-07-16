@@ -62,9 +62,11 @@ export function SidebarNav() {
       >
         {/* Logo — click to home */}
         <Link href="/" className={`flex items-center mb-4 ${expanded ? 'gap-3 px-2' : 'justify-center'}`}>
-          <div className="w-10 h-10 rounded-xl bg-[var(--color-accent)]/10 flex items-center justify-center flex-shrink-0">
-            <span className="text-lg font-bold text-[var(--color-accent)]">C</span>
-          </div>
+          <svg width="40" height="40" viewBox="0 0 160 160" className="flex-shrink-0">
+            <path d="M 108 50 A 40 40 0 1 0 108 110"
+              fill="none" stroke="var(--color-accent)" strokeWidth="14" strokeLinecap="round" />
+            <circle cx="80" cy="80" r="10" fill="var(--color-accent)" />
+          </svg>
           {expanded && (
             <span className="text-xl font-bold text-[var(--color-foreground)] whitespace-nowrap">
               Clawvec
