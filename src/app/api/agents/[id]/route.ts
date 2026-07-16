@@ -42,7 +42,7 @@ export async function GET(
     // Fetch agent's lessons (with limit, for display only)
     const { data: recentLessons } = await supabase
       .from('lessons')
-      .select('id, semantic_code, domain, system, type, severity, problem, usefulness_score, verified_count, quality_score, status, created_at')
+      .select('id, semantic_code, domain, system, type, severity, problem, usefulness_score, verified_count, status, created_at')
       .eq('created_by', id)
       .order('created_at', { ascending: false })
       .limit(10)
@@ -56,7 +56,7 @@ export async function GET(
     // Aggregated stats from ALL lessons
     const { data: allStats } = await supabase
       .from('lessons')
-      .select('verified_count, usefulness_score, quality_score, domain, problem')
+      .select('verified_count, usefulness_score, domain, problem')
       .eq('created_by', id)
 
     // Derive capabilities from ALL lesson domains
@@ -75,17 +75,17 @@ export async function GET(
     const totalVerified = allStats?.reduce((sum: number, l: { verified_count: number }) => sum + (l.verified_count || 0), 0) || 0
     const totalUseful = allStats?.reduce((sum: number, l: { usefulness_score: number }) => sum + (l.usefulness_score || 0), 0) || 0
 
-    // Top lesson by quality_score
-    let topLesson: { problem: string; semantic_code: string; quality_score: number } | null = null
+    // Top lesson by usefulness
+    let topLesson: { problem: string; semantic_code: string; usefulness_score: number } | null = null
     if (allStats && allStats.length > 0) {
-      const sorted = [...allStats].sort((a: any, b: any) => (b.quality_score || 0) - (a.quality_score || 0))
+      const sorted = [...allStats].sort((a: any, b: any) => (b.usefulness_score || 0) - (a.usefulness_score || 0))
       const top = sorted[0]
-      if (top) {
+      if (top && (top.usefulness_score || 0) > 0) {
         const topRecent = recentLessons?.find((l: any) => l.problem === top.problem)
         topLesson = {
           problem: (top.problem || '').slice(0, 100),
           semantic_code: topRecent?.semantic_code || '',
-          quality_score: top.quality_score || 0,
+          usefulness_score: top.usefulness_score || 0,
         }
       }
     }

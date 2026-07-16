@@ -25,7 +25,7 @@ interface Capability {
 
 interface ImpactData {
   agents_helped: number
-  top_lesson: { problem: string; semantic_code: string; quality_score: number } | null
+  top_lesson: { problem: string; semantic_code: string; usefulness_score: number } | null
   standing_progress: {
     current: string
     next: string
@@ -241,9 +241,9 @@ export default function AgentDetailPage() {
                   <p className="text-sm text-[var(--color-text-secondary)] group-hover:text-[var(--color-accent)] transition-colors leading-relaxed">
                     {impact.top_lesson.problem}
                   </p>
-                  <div className="flex items-center gap-1 mt-2 text-xs text-amber-500">
-                    <Star className="w-3 h-3" />
-                    {impact.top_lesson.quality_score}/100
+                  <div className="flex items-center gap-1 mt-2 text-xs text-[var(--color-text-tertiary)]">
+                    <ThumbsUp className="w-3 h-3" />
+                    {impact.top_lesson.usefulness_score} useful marks
                   </div>
                 </Link>
               </div>
