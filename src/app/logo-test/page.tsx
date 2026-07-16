@@ -1,90 +1,134 @@
 export default function LogoTestPage() {
-  const svgStyle = "w-40 h-40 object-contain"
-
   return (
     <div className="min-h-screen bg-[var(--color-background)] flex flex-col items-center gap-12 px-6 py-16">
       <div className="text-center">
-        <h1 className="text-3xl font-bold text-[var(--color-foreground)] mb-2">Clawvec Logo Candidates</h1>
-        <p className="text-[var(--color-text-secondary)]">以 C 為核心 · 網頁橘 #FF5A3C · 參考 AI 工具 logo 風格</p>
+        <h1 className="text-3xl font-bold text-[var(--color-foreground)] mb-2">SVG Logo Candidates</h1>
+        <p className="text-[var(--color-text-secondary)]">全部 SVG 手繪 · 橘色 #FF5A3C</p>
       </div>
 
-      {/* Row 1: FLUX AI generated */}
+      {/* Target reference: FLUX double-arc */}
       <div className="w-full max-w-5xl">
-        <h2 className="text-sm font-semibold text-[var(--color-text-tertiary)] uppercase tracking-wider mb-4">AI 生成</h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="glass rounded-2xl p-6 flex flex-col items-center gap-3">
-            <img src="https://v3b.fal.media/files/b/0aa27d26/wZJ1TwzzLO0tCofi7FY4q_0ArTODyd.png" className={svgStyle} alt="FLUX 1" />
-            <span className="text-xs text-[var(--color-text-tertiary)]">連續弧線 (FLUX)</span>
-          </div>
-          <div className="glass rounded-2xl p-6 flex flex-col items-center gap-3">
-            <img src="https://v3b.fal.media/files/b/0aa27d47/jgzBfQNJo2jV__MelWFKK_JGRkJIlJ.png" className={svgStyle} alt="FLUX 2" />
-            <span className="text-xs text-[var(--color-text-tertiary)]">帶狀 C 字 (FLUX)</span>
-          </div>
-          <div className="glass rounded-2xl p-6 flex flex-col items-center gap-3">
-            <img src="https://v3b.fal.media/files/b/0aa27d48/Z8LlFZX5G1qum10mEkKJ5_CCDWKQof.png" className={svgStyle} alt="FLUX 3" />
-            <span className="text-xs text-[var(--color-text-tertiary)]">雙弧疊加 (FLUX)</span>
-          </div>
-          <div className="glass rounded-2xl p-6 flex flex-col items-center gap-3">
-            <img src="https://v3b.fal.media/files/b/0aa27d49/TpPeTp2pVMEu7vw6il8_s_8z3thXKv.png" className={svgStyle} alt="FLUX 4" />
-            <span className="text-xs text-[var(--color-text-tertiary)]">負空間 C (FLUX)</span>
-          </div>
+        <h2 className="text-sm font-semibold text-[var(--color-text-secondary)] mb-2">🎯 目標：FLUX 雙弧疊加效果</h2>
+        <div className="glass rounded-2xl p-6 flex flex-col items-center gap-3">
+          <img src="https://v3b.fal.media/files/b/0aa27d48/Z8LlFZX5G1qum10mEkKJ5_CCDWKQof.png"
+            className="w-40 h-40 object-contain" alt="Target" />
+          <span className="text-xs text-[var(--color-text-tertiary)]">FLUX 原圖（雙弧疊加透視 C）</span>
         </div>
       </div>
 
-      {/* Row 2: SVG crafted */}
+      {/* SVG attempts at the double-arc look */}
       <div className="w-full max-w-5xl">
-        <h2 className="text-sm font-semibold text-[var(--color-text-tertiary)] uppercase tracking-wider mb-4">SVG 手繪</h2>
+        <h2 className="text-sm font-semibold text-[var(--color-text-secondary)] mb-4">⬇ SVG 重現嘗試</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {/* 1: arc + claw */}
-          <div className="glass rounded-2xl p-6 flex flex-col items-center gap-3">
+
+          {/* SVG A: twin arcs + center dot */}
+          <div className="glass rounded-2xl p-6 flex flex-col items-center gap-3 bg-[var(--color-background)]">
             <svg width="160" height="160" viewBox="0 0 160 160">
-              <circle cx="80" cy="80" r="58" fill="none" stroke="#FF5A3C" strokeWidth="7"
-                strokeDasharray="280" strokeDashoffset="75" strokeLinecap="round"
-                transform="rotate(-20 80 80)" />
-              <path d="M 50 116 Q 33 100 21 75" fill="none" stroke="#FF5A3C" strokeWidth="7" strokeLinecap="round" />
-              <path d="M 50 116 L 37 128" fill="none" stroke="#FF5A3C" strokeWidth="7" strokeLinecap="round" />
+              <defs>
+                <linearGradient id="ga" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stopColor="#FF5A3C" stopOpacity="0.25" />
+                  <stop offset="100%" stopColor="#FF5A3C" stopOpacity="1" />
+                </linearGradient>
+                <linearGradient id="gb" x1="1" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#FF5A3C" stopOpacity="1" />
+                  <stop offset="100%" stopColor="#FF5A3C" stopOpacity="0.15" />
+                </linearGradient>
+              </defs>
+              <path d="M 120 32 C 76 24 36 42 36 80 C 36 118 76 136 120 128"
+                fill="none" stroke="url(#ga)" strokeWidth="5" strokeLinecap="round" />
+              <path d="M 120 36 C 80 28 44 46 44 80 C 44 114 80 132 120 124"
+                fill="none" stroke="url(#gb)" strokeWidth="6" strokeLinecap="round" />
+              <circle cx="78" cy="78" r="6" fill="#FF5A3C" opacity="0.8" />
             </svg>
-            <span className="text-xs text-[var(--color-text-tertiary)]">弧線 + 爪尖</span>
+            <span className="text-xs text-[var(--color-text-tertiary)]">A: 雙弧漸層</span>
           </div>
 
-          {/* 2: bold geometric */}
-          <div className="glass rounded-2xl p-6 flex flex-col items-center gap-3">
+          {/* SVG B: overlapping with mix-blend */}
+          <div className="glass rounded-2xl p-6 flex flex-col items-center gap-3 bg-[var(--color-background)]">
             <svg width="160" height="160" viewBox="0 0 160 160">
-              <path d="M 110 22 C 65 12 12 32 12 80 C 12 128 65 148 110 136"
-                fill="none" stroke="#FF5A3C" strokeWidth="9" strokeLinecap="round" />
-              <circle cx="80" cy="80" r="6" fill="#FF5A3C" opacity="0.5" />
+              <path d="M 115 32 C 78 22 38 36 28 70 L 52 72 C 55 48 72 38 115 54"
+                fill="none" stroke="#FF5A3C" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M 28 70 C 32 110 80 138 115 106 L 98 92 C 78 112 50 104 48 73"
+                fill="none" stroke="#FF5A3C" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" opacity="0.6" />
+              <circle cx="78" cy="74" r="5" fill="#FF5A3C" />
             </svg>
-            <span className="text-xs text-[var(--color-text-tertiary)]">粗體幾何 C</span>
+            <span className="text-xs text-[var(--color-text-tertiary)]">B: 不對稱開口</span>
           </div>
 
-          {/* 3: twin arcs */}
-          <div className="glass rounded-2xl p-6 flex flex-col items-center gap-3">
+          {/* SVG C: continuous C with fade */}
+          <div className="glass rounded-2xl p-6 flex flex-col items-center gap-3 bg-[var(--color-background)]">
             <svg width="160" height="160" viewBox="0 0 160 160">
-              <path d="M 120 32 C 72 24 32 42 32 80 C 32 118 72 136 120 128"
-                fill="none" stroke="#FF5A3C" strokeWidth="5" strokeLinecap="round" opacity="0.4" />
-              <path d="M 120 38 C 80 28 40 44 40 80 C 40 116 80 132 120 124"
+              <defs>
+                <linearGradient id="gc" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#FF5A3C" stopOpacity="1" />
+                  <stop offset="40%" stopColor="#FF5A3C" stopOpacity="0.6" />
+                  <stop offset="100%" stopColor="#FF5A3C" stopOpacity="0.1" />
+                </linearGradient>
+              </defs>
+              <path d="M 118 20 C 60 8 8 36 8 80 C 8 124 60 152 118 140"
+                fill="none" stroke="url(#gc)" strokeWidth="8" strokeLinecap="round" />
+              <circle cx="78" cy="80" r="5" fill="#FF5A3C" opacity="0.7" />
+            </svg>
+            <span className="text-xs text-[var(--color-text-tertiary)]">C: 連續漸層 C</span>
+          </div>
+
+          {/* SVG D: parallel strokes */}
+          <div className="glass rounded-2xl p-6 flex flex-col items-center gap-3 bg-[var(--color-background)]">
+            <svg width="160" height="160" viewBox="0 0 160 160">
+              <path d="M 110 22 C 70 12 22 30 22 80 C 22 130 70 148 110 138"
+                fill="none" stroke="#FF5A3C" strokeWidth="4" strokeLinecap="round" opacity="0.3" />
+              <path d="M 110 30 C 70 20 30 36 30 80 C 30 124 70 140 110 130"
                 fill="none" stroke="#FF5A3C" strokeWidth="5" strokeLinecap="round" />
-              <circle cx="80" cy="80" r="5" fill="#FF5A3C" />
+              <path d="M 110 38 C 70 28 38 42 38 80 C 38 118 70 132 110 122"
+                fill="none" stroke="#FF5A3C" strokeWidth="4" strokeLinecap="round" opacity="0.5" />
+              <circle cx="78" cy="80" r="4" fill="#FF5A3C" />
             </svg>
-            <span className="text-xs text-[var(--color-text-tertiary)]">雙弧重疊 C</span>
-          </div>
-
-          {/* 4: sharp cut */}
-          <div className="glass rounded-2xl p-6 flex flex-col items-center gap-3">
-            <svg width="160" height="160" viewBox="0 0 160 160">
-              <path d="M 118 28 C 83 15 42 30 25 60 L 50 75 C 55 50 78 38 118 52 Z"
-                fill="none" stroke="#FF5A3C" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" />
-              <path d="M 25 60 C 28 110 90 142 118 108 L 98 95 C 82 118 48 110 48 77 Z"
-                fill="none" stroke="#FF5A3C" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-            <span className="text-xs text-[var(--color-text-tertiary)]">銳利切角 C</span>
+            <span className="text-xs text-[var(--color-text-tertiary)]">D: 三層平行弧</span>
           </div>
         </div>
       </div>
 
-      {/* Nav for quick comparison */}
-      <div className="flex items-center gap-4 pt-4 border-t border-[var(--color-line)]">
-        <p className="text-xs text-[var(--color-text-tertiary)]">已部署 · 調整後可即時更新</p>
+      {/* SVG E: mix-blend-mode experiment */}
+      <div className="w-full max-w-5xl">
+        <h2 className="text-sm font-semibold text-[var(--color-text-secondary)] mb-4">⬇ 疊加混合模式（mix-blend-mode）</h2>
+        <div className="grid grid-cols-2 gap-4">
+          <div className="glass rounded-2xl p-8 flex flex-col items-center gap-3">
+            <div className="relative w-40 h-40">
+              <svg width="160" height="160" viewBox="0 0 160 160" className="absolute inset-0">
+                <circle cx="80" cy="80" r="54" fill="none" stroke="#FF5A3C" strokeWidth="16"
+                  strokeDasharray="280" strokeDashoffset="82" strokeLinecap="round"
+                  transform="rotate(-20 80 80)"
+                  style={{ opacity: 0.7, mixBlendMode: 'screen' }} />
+              </svg>
+              <svg width="160" height="160" viewBox="0 0 160 160" className="absolute inset-0">
+                <circle cx="80" cy="80" r="54" fill="none" stroke="#CC3D2E" strokeWidth="12"
+                  strokeDasharray="280" strokeDashoffset="95" strokeLinecap="round"
+                  transform="rotate(-10 80 80)"
+                  style={{ opacity: 0.9, mixBlendMode: 'screen' }} />
+              </svg>
+              <div className="absolute top-1/2 left-1/2 w-4 h-4 rounded-full bg-[#FF5A3C] -translate-x-1/2 -translate-y-1/2" />
+            </div>
+            <span className="text-xs text-[var(--color-text-tertiary)]">E: screen blend</span>
+          </div>
+
+          <div className="glass rounded-2xl p-8 flex flex-col items-center gap-3">
+            <div className="relative w-40 h-40">
+              <svg width="160" height="160" viewBox="0 0 160 160" className="absolute inset-0">
+                <circle cx="80" cy="80" r="54" fill="none" stroke="#FF5A3C" strokeWidth="20"
+                  strokeDasharray="275" strokeDashoffset="80" strokeLinecap="round"
+                  transform="rotate(-25 80 80)"
+                  style={{ opacity: 0.5, mixBlendMode: 'lighten' }} />
+              </svg>
+              <svg width="160" height="160" viewBox="0 0 160 160" className="absolute inset-0">
+                <circle cx="80" cy="80" r="54" fill="none" stroke="#FF5A3C" strokeWidth="14"
+                  strokeDasharray="275" strokeDashoffset="72" strokeLinecap="round"
+                  transform="rotate(-5 80 80)"
+                  style={{ opacity: 0.9, mixBlendMode: 'lighten' }} />
+              </svg>
+            </div>
+            <span className="text-xs text-[var(--color-text-tertiary)]">F: lighten blend</span>
+          </div>
+        </div>
       </div>
     </div>
   )
