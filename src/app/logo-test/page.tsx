@@ -1,118 +1,56 @@
+import Image from 'next/image'
+
 export default function LogoTestPage() {
   return (
-    <div style={{
-      minHeight: '100vh',
-      background: '#f1f5f9',
-      color: '#0f172a',
-      fontFamily: 'SF Mono, Monaco, Consolas, monospace',
-      padding: '40px 20px',
-    }}>
-      <h1 style={{
-        textAlign: 'center',
-        fontSize: '28px',
-        fontWeight: 800,
-        letterSpacing: '8px',
-        marginBottom: '8px',
-        color: '#0f172a',
-      }}>
-        CLAWVEC LOGO — C 系列
-      </h1>
-      <p style={{ textAlign: 'center', opacity: 0.5, marginBottom: '40px', fontSize: '12px', letterSpacing: '4px' }}>
-        白色背景 · 以 C 發想 · 三個方向
-      </p>
+    <div className="min-h-screen bg-[var(--color-background)] flex flex-col items-center justify-center gap-12 px-6 py-16">
+      <h1 className="text-3xl font-bold text-[var(--color-foreground)]">Clawvec Logo Candidates</h1>
+      <p className="text-[var(--color-text-secondary)]">以 C 為核心，網頁橘 #FF5A3C，參考 AI 工具 logo 風格</p>
 
-      <div style={{
-        display: 'flex',
-        flexWrap: 'wrap',
-        gap: '32px',
-        justifyContent: 'center',
-        maxWidth: '1400px',
-        margin: '0 auto',
-      }}>
-        {/* C1 */}
-        <div style={{ flex: '1 1 300px', maxWidth: '440px', textAlign: 'center' }}>
-          <div style={{
-            background: '#ffffff',
-            borderRadius: '24px',
-            padding: '24px',
-            border: '1px solid #e2e8f0',
-            boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
-          }}>
-            <img
-              src="/logo-c1.svg"
-              alt="Logo C1 - 爪痕C"
-              style={{ width: '100%', height: 'auto', borderRadius: '12px' }}
-            />
-          </div>
-          <h2 style={{
-            marginTop: '16px',
-            fontSize: '16px',
-            letterSpacing: '4px',
-            color: '#0f172a',
-          }}>
-            C1 — 爪痕 C
-          </h2>
-          <p style={{ fontSize: '12px', opacity: 0.5, lineHeight: 1.6 }}>
-            C 形被三道白色爪痕打斷 · 紅色箭頭射出 · 粒子尾隨
-          </p>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl">
+        {/* AI-generated logo */}
+        <div className="glass rounded-2xl p-8 flex flex-col items-center gap-4">
+          <img
+            src="https://v3b.fal.media/files/b/0aa27d26/wZJ1TwzzLO0tCofi7FY4q_0ArTODyd.png"
+            alt="Clawvec logo - AI generated"
+            className="w-48 h-48 object-contain"
+          />
+          <span className="text-xs text-[var(--color-text-tertiary)]">AI 生成 (FLUX)</span>
         </div>
 
-        {/* C2 */}
-        <div style={{ flex: '1 1 300px', maxWidth: '440px', textAlign: 'center' }}>
-          <div style={{
-            background: '#ffffff',
-            borderRadius: '24px',
-            padding: '24px',
-            border: '1px solid #e2e8f0',
-            boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
-          }}>
-            <img
-              src="/logo-c2.svg"
-              alt="Logo C2 - 鉗C"
-              style={{ width: '100%', height: 'auto', borderRadius: '12px' }}
-            />
-          </div>
-          <h2 style={{
-            marginTop: '16px',
-            fontSize: '16px',
-            letterSpacing: '4px',
-            color: '#0f172a',
-          }}>
-            C2 — 鉗 C
-          </h2>
-          <p style={{ fontSize: '12px', opacity: 0.5, lineHeight: 1.6 }}>
-            粗體 C + 紅色雙鉗伸展 · 中心粒子上浮 · 極簡有力
-          </p>
+        {/* SVG Logo 1: minimal C with claw tip */}
+        <div className="glass rounded-2xl p-8 flex flex-col items-center gap-4">
+          <svg width="192" height="192" viewBox="0 0 192 192">
+            <circle cx="96" cy="96" r="70" fill="none" stroke="#FF5A3C" strokeWidth="8"
+              strokeDasharray="340" strokeDashoffset="90" strokeLinecap="round"
+              transform="rotate(-20 96 96)" />
+            <path d="M 60 140 Q 40 120 25 90" fill="none" stroke="#FF5A3C" strokeWidth="8" strokeLinecap="round" />
+            <path d="M 60 140 L 45 155" fill="none" stroke="#FF5A3C" strokeWidth="8" strokeLinecap="round" />
+          </svg>
+          <span className="text-xs text-[var(--color-text-tertiary)]">連續弧線 + 爪尖 (SVG)</span>
         </div>
 
-        {/* C3 */}
-        <div style={{ flex: '1 1 300px', maxWidth: '440px', textAlign: 'center' }}>
-          <div style={{
-            background: '#ffffff',
-            borderRadius: '24px',
-            padding: '24px',
-            border: '1px solid #e2e8f0',
-            boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
-          }}>
-            <img
-              src="/logo-c3.svg"
-              alt="Logo C3 - 網絡C"
-              style={{ width: '100%', height: 'auto', borderRadius: '12px' }}
-            />
-          </div>
-          <h2 style={{
-            marginTop: '16px',
-            fontSize: '16px',
-            letterSpacing: '4px',
-            color: '#0f172a',
-          }}>
-            C3 — 網絡 C
-          </h2>
-          <p style={{ fontSize: '12px', opacity: 0.5, lineHeight: 1.6 }}>
-            C 形框架 + 內部向量網路 · 節點互相連結 · 科技感
-          </p>
+        {/* SVG Logo 2: bold geometric C */}
+        <div className="glass rounded-2xl p-8 flex flex-col items-center gap-4">
+          <svg width="192" height="192" viewBox="0 0 192 192">
+            <path d="M 130 30 C 80 20 20 40 20 96 C 20 152 80 172 130 160"
+              fill="none" stroke="#FF5A3C" strokeWidth="10" strokeLinecap="round" />
+            <circle cx="96" cy="96" r="8" fill="#FF5A3C" opacity="0.6" />
+          </svg>
+          <span className="text-xs text-[var(--color-text-tertiary)]">粗體 C 字幾何 (SVG)</span>
+        </div>
+      </div>
+
+      {/* Color reference */}
+      <div className="flex items-center gap-6 text-sm text-[var(--color-text-secondary)]">
+        <div className="flex items-center gap-2">
+          <div className="w-6 h-6 rounded" style={{ background: '#FF5A3C' }} />
+          <span>#FF5A3C</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <div className="w-6 h-6 rounded" style={{ background: '#CC3D2E' }} />
+          <span>#CC3D2E</span>
         </div>
       </div>
     </div>
-  );
+  )
 }
