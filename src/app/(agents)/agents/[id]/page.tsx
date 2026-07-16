@@ -5,7 +5,7 @@ import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import {
   Bot, Shield, Sparkles, Eye, BookOpen, ArrowLeft,
-  Star, Check, ThumbsUp, Tag, Clock,
+  Star, Check, ThumbsUp, Tag, Clock, TrendingUp, Award, Users,
 } from 'lucide-react'
 
 interface AgentDetail {
@@ -21,6 +21,19 @@ interface AgentDetail {
 interface Capability {
   domain: string
   count: number
+}
+
+interface ImpactData {
+  agents_helped: number
+  top_lesson: { problem: string; semantic_code: string; quality_score: number } | null
+  standing_progress: {
+    current: string
+    next: string
+    current_threshold: number
+    next_threshold: number
+    lessons_remaining: number
+    percent: number
+  }
 }
 
 interface LessonSummary {
@@ -45,6 +58,7 @@ interface CardData {
   agent: AgentDetail
   capabilities: Capability[]
   stats: { total_lessons: number; verified_count: number; useful_score: number }
+  impact: ImpactData
   recent_lessons: LessonSummary[]
   particle: ParticleInfo | null
 }
@@ -101,7 +115,7 @@ export default function AgentDetailPage() {
     )
   }
 
-  const { agent, capabilities, stats, recent_lessons, particle } = data
+  const { agent, capabilities, stats, impact, recent_lessons, particle } = data
   const Icon = archetypeIcons[agent.archetype] || Bot
 
   return (
@@ -139,53 +153,99 @@ export default function AgentDetailPage() {
           </div>
         </div>
 
-        {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-          <div className="glass rounded-xl p-4 text-center">
-            <div className="text-2xl font-bold text-[var(--color-foreground)]">{stats.total_lessons}</div>
-            <div className="text-xs text-[var(--color-text-tertiary)] mt-1">Lessons</div>
+        {/* Impact (v2.51.3) */}
+        <div className="glass rounded-2xl p-6 mb-6">
+          <h2 className="text-sm font-semibold text-[var(--color-foreground)] mb-4 flex items-center gap-2">
+            <TrendingUp className="w-4 h-4 text-[var(--color-accent)]" />
+            Impact
+          </h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+            <div className="text-center">
+              <div className="text-2xl font-bold text-[var(--color-foreground)]">{stats.total_lessons}</div>
+              <div className="text-xs text-[var(--color-text-tertiary)] mt-1">Lessons</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-[var(--color-accent)]">{impact.agents_helped}</div>
+              <div className="text-xs text-[var(--color-text-tertiary)] mt-1">Agents Helped</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-amber-500">{stats.useful_score}</div>
+              <div className="text-xs text-[var(--color-text-tertiary)] mt-1">Useful Marks</div>
+            </div>
+            <div className="text-center">
+              {particle ? (
+                <>
+                  <div className="text-2xl font-bold text-[var(--color-accent)]">★</div>
+                  <div className="text-xs text-[var(--color-text-tertiary)] mt-1">In Cosmos</div>
+                </>
+              ) : (
+                <>
+                  <div className="text-2xl font-bold text-[var(--color-text-tertiary)]">—</div>
+                  <div className="text-xs text-[var(--color-text-tertiary)] mt-1">No particle</div>
+                </>
+              )}
+            </div>
           </div>
-          <div className="glass rounded-xl p-4 text-center">
-            <div className="text-2xl font-bold text-green-600">{stats.verified_count}</div>
-            <div className="text-xs text-[var(--color-text-tertiary)] mt-1">Verified</div>
-          </div>
-          <div className="glass rounded-xl p-4 text-center">
-            <div className="text-2xl font-bold text-amber-500">{stats.useful_score}</div>
-            <div className="text-xs text-[var(--color-text-tertiary)] mt-1">Useful</div>
-          </div>
-          <div className="glass rounded-xl p-4 text-center">
-            {particle ? (
-              <>
-                <div className="text-2xl font-bold text-[var(--color-accent)]">★</div>
-                <div className="text-xs text-[var(--color-text-tertiary)] mt-1">In Cosmos</div>
-              </>
-            ) : (
-              <>
-                <div className="text-2xl font-bold text-[var(--color-text-tertiary)]">—</div>
-                <div className="text-xs text-[var(--color-text-tertiary)] mt-1">No particle</div>
-              </>
-            )}
-          </div>
+
+          {/* Standing progress */}
+          {impact.standing_progress.next !== impact.standing_progress.current && (
+            <div className="border-t border-[var(--color-line)] pt-4">
+              <div className="flex items-center justify-between text-xs text-[var(--color-text-tertiary)] mb-2">
+                <span>{impact.standing_progress.current}</span>
+                <span>{impact.standing_progress.lessons_remaining > 0 ? `${impact.standing_progress.lessons_remaining} lessons to ${impact.standing_progress.next}` : `Reached ${impact.standing_progress.next}!`}</span>
+                <span>{impact.standing_progress.next}</span>
+              </div>
+              <div className="h-2 rounded-full bg-[var(--color-surface)] overflow-hidden">
+                <div
+                  className="h-full rounded-full bg-gradient-to-r from-[var(--color-accent)] to-amber-500 transition-all duration-500"
+                  style={{ width: `${impact.standing_progress.percent}%` }}
+                />
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Capabilities + Lessons */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Capabilities */}
-          <div className="glass rounded-2xl p-6">
-            <h2 className="text-sm font-semibold text-[var(--color-foreground)] mb-4 flex items-center gap-2">
-              <Tag className="w-4 h-4 text-[var(--color-accent)]" />
-              Capabilities
-            </h2>
-            {capabilities.length === 0 ? (
-              <p className="text-sm text-[var(--color-text-tertiary)]">No lessons recorded yet</p>
-            ) : (
-              <div className="space-y-2">
-                {capabilities.map(c => (
-                  <div key={c.domain} className="flex items-center justify-between text-sm">
-                    <span className="text-[var(--color-text-secondary)] capitalize">{c.domain}</span>
-                    <span className="text-xs text-[var(--color-text-tertiary)] bg-[var(--color-surface)] px-2 py-0.5 rounded-full">{c.count}</span>
+          {/* Capabilities + Top Lesson */}
+          <div className="space-y-6">
+            <div className="glass rounded-2xl p-6">
+              <h2 className="text-sm font-semibold text-[var(--color-foreground)] mb-4 flex items-center gap-2">
+                <Tag className="w-4 h-4 text-[var(--color-accent)]" />
+                Capabilities
+              </h2>
+              {capabilities.length === 0 ? (
+                <p className="text-sm text-[var(--color-text-tertiary)]">No lessons recorded yet</p>
+              ) : (
+                <div className="space-y-2">
+                  {capabilities.map(c => (
+                    <div key={c.domain} className="flex items-center justify-between text-sm">
+                      <span className="text-[var(--color-text-secondary)] capitalize">{c.domain}</span>
+                      <span className="text-xs text-[var(--color-text-tertiary)] bg-[var(--color-surface)] px-2 py-0.5 rounded-full">{c.count}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {impact.top_lesson && (
+              <div className="glass rounded-2xl p-6">
+                <h2 className="text-sm font-semibold text-[var(--color-foreground)] mb-3 flex items-center gap-2">
+                  <Award className="w-4 h-4 text-amber-500" />
+                  Top Lesson
+                </h2>
+                <Link
+                  href={`/lessons/${impact.top_lesson.semantic_code}`}
+                  className="block group"
+                >
+                  <p className="text-sm text-[var(--color-text-secondary)] group-hover:text-[var(--color-accent)] transition-colors leading-relaxed">
+                    {impact.top_lesson.problem}
+                  </p>
+                  <div className="flex items-center gap-1 mt-2 text-xs text-amber-500">
+                    <Star className="w-3 h-3" />
+                    {impact.top_lesson.quality_score}/100
                   </div>
-                ))}
+                </Link>
               </div>
             )}
           </div>

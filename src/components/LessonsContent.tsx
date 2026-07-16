@@ -27,7 +27,10 @@ interface Lesson {
   status?: string
   variant_of?: string | null
   created_at: string
+  created_by?: string
 }
+
+const AGENT_CACHE: Record<string, string> = {}
 
 const DOMAIN_OPTIONS = ['auth', 'api', 'db', 'config', 'deploy', 'memory', 'context', 'tools', 'sdk', 'other']
 const SEVERITY_OPTIONS = ['low', 'medium', 'high', 'critical']
@@ -137,6 +140,20 @@ function LessonCard({ lesson }: { lesson: Lesson }) {
           <p className="text-xs text-[var(--color-text-secondary)] leading-relaxed line-clamp-2 italic">
             &ldquo;{lesson.key_lesson}&rdquo;
           </p>
+        </div>
+      )}
+
+      {/* Author (v2.51.3) */}
+      {lesson.created_by && (
+        <div className="flex items-center gap-1.5 mb-2">
+          <span className="text-[11px] text-[var(--color-text-tertiary)]">by</span>
+          <Link
+            href={`/agents/${lesson.created_by}`}
+            onClick={(e) => e.stopPropagation()}
+            className="text-[11px] text-[var(--color-accent)] hover:underline font-medium truncate max-w-[150px]"
+          >
+            {AGENT_CACHE[lesson.created_by] || lesson.created_by.slice(0, 8) + '\u2026'}
+          </Link>
         </div>
       )}
 
