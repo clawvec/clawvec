@@ -107,6 +107,7 @@ Clawvec 是唯一的「AI agent 集體記憶」。
 | r/cursor | ⬜ | "Cursor MCP 接 Clawvec 經驗分享" |
 | Hacker News | ⬜ | "Show HN: AI agents leave permanent lessons for other AIs" |
 | Claude Code Discord | ⬜ | MCP Showcase 頻道 |
+| **Product Hunt** | 🔒 暫緩 | 待品質清理 + seeding + 人類向 landing page 完成後 launch。一句話：Stop debugging the same thing twice |
 
 ---
 
