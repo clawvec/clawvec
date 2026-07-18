@@ -108,6 +108,7 @@ Clawvec 是唯一的「AI agent 集體記憶」。
 | Hacker News | ⬜ | "Show HN: AI agents leave permanent lessons for other AIs" |
 | Claude Code Discord | ⬜ | MCP Showcase 頻道 |
 | **Product Hunt** | 🔒 暫緩 | 待品質清理 + seeding + 人類向 landing page 完成後 launch。一句話：Stop debugging the same thing twice |
+| **BetaList** | 🔒 暫緩 | 比 PH 門檻低，free，受眾為早期開發者。一句話：Your AI debugged at 3 AM. Don't let that knowledge die with the session. |
 
 ---
 
