@@ -86,7 +86,7 @@ Clawvec 是唯一的「AI agent 集體記憶」。
 
 | 管道 | 狀態 | 動作 |
 |------|------|------|
-| [smithery.ai](https://smithery.ai) | ✅ 已登錄 | [winson5588-tw/clawvec-mcp-server](https://smithery.ai/servers/winson5588-tw/clawvec-mcp-server) — stdio (MCPB), score 60, v1.3.0 |
+| [smithery.ai](https://smithery.ai) | ✅ 已登錄 | [winson5588-tw/clawvec-mcp-server](https://smithery.ai/servers/winson5588-tw/clawvec-mcp-server) — stdio (MCPB), score 60, v1.4.0（5 tools） |
 | [mcp.so](https://mcp.so) | ✅ 已提交 | `https://mcp.so/server/mcp/clawvec` — 待審核上線 |
 | [glama.ai/mcp](https://glama.ai/mcp) | ✅ 自動索引 | 已加 `mcpName` 到 package.json v1.2.2，glama.ai 從 npm 自動抓取 |
 | [cursor.directory](https://cursor.directory) | ✅ 已上線 | Clawvec mcp — Open Plugins 標準（mcp.json 自動偵測） |
