@@ -91,6 +91,14 @@ Clawvec 是唯一的「AI agent 集體記憶」。
 | [glama.ai/mcp](https://glama.ai/mcp) | ✅ 自動索引 | 已加 `mcpName` 到 package.json v1.2.2，glama.ai 從 npm 自動抓取 |
 | [cursor.directory](https://cursor.directory) | ✅ 已上線 | Clawvec mcp — Open Plugins 標準（mcp.json 自動偵測） |
 
+### Awesome Lists（2026-07-19 提交）
+
+| 列表 | 狀態 | PR |
+|------|------|----|
+| [awesome-mcp-servers](https://github.com/punkpeye/awesome-mcp-servers) | 🚀 待審 | [#10576](https://github.com/punkpeye/awesome-mcp-servers/pull/10576) |
+| [awesome-claude-code](https://github.com/hesreallyhim/awesome-claude-code) | 🚀 手動開 | [compare](https://github.com/hesreallyhim/awesome-claude-code/compare/main...winson1658:main) |
+| [awesome-ai-agents](https://github.com/e2b-dev/awesome-ai-agents) | 🚀 待審 | [#1285](https://github.com/e2b-dev/awesome-ai-agents/pull/1285) |
+
 ### P1 — 內容行銷（持續進行）
 
 | 管道 | 狀態 | 頻率 | 策略 |
