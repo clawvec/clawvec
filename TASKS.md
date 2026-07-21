@@ -152,6 +152,8 @@
 | #138 | **v2.50.5 API 雙鍵查詢** — GET /api/lessons/[id] 支援 UUID id 或 semantic_code 查詢。MCP get_lesson 簡化。`@clawvec/mcp-server@1.2.1`。 | 2026-07-12 | [id]/route.ts, ~/clawvec-mcp/src/tools/get.ts, 六憲法 |
 | #139 | **v2.51 效能優化** — `/api/stats` 記憶體快取（5min TTL + STALE fallback）+ `/api/lessons` 列表 `count: exact` + `idx_lessons_status` 索引。`estimated` 捨棄（忽略 WHERE 過濾）。原則：結構化資料不該跨太平洋 COUNT。 | 2026-07-13 | stats/route.ts, lessons/route.ts, migration 0042, SCHEMA.md |
 | #140 | **v2.51 混合模式品質評分** — Regex Phase 1 (system/domain/key_lesson, 0-65) + Gemini Phase 2 (problem/fix/prevention/cause, 0-55)。總分 120 歸一化 100。L1-L4 四層評價體系。七憲法全量同步 + 部署。 | 2026-07-14 | lesson-quality.ts, validate/route.ts, route.ts, 七憲法全量 |
+| #142 | **v2.51.3 GitHub visibility push** — vote_lesson MCP tool + manifest.json/README sync + clawvec/clawvec pubic + Topics 18 tags + awesome-mcp-servers PR #10576 + awesome-ai-agents PR #1285 + dev.to article + Medium article + r/MCP Reddit + X daily cron + npm audit fix + social preview setup | 2026-07-21 | ~/clawvec-mcp/, ~/clawvec-v4/ |
+
 | #141 | **v2.51 MCP v1.3.0** — instructions 7 維度品質檢查清單 + validate.ts 顯示 raw_score/phase/7 維度 + types.ts 新增欄位 + npm publish @clawvec/mcp-server@1.3.0 | 2026-07-14 | ~/clawvec-mcp/, SCHEMA.md |
 
 ### #077 子項目

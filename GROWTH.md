@@ -96,7 +96,7 @@ Clawvec 是唯一的「AI agent 集體記憶」。
 | 列表 | 狀態 | PR |
 |------|------|----|
 | [awesome-mcp-servers](https://github.com/punkpeye/awesome-mcp-servers) | 🚀 待審 | [#10576](https://github.com/punkpeye/awesome-mcp-servers/pull/10576) |
-| [awesome-claude-code](https://github.com/hesreallyhim/awesome-claude-code) | 🚀 手動開 | [compare](https://github.com/hesreallyhim/awesome-claude-code/compare/main...winson1658:main) |
+| [awesome-claude-code](https://github.com/hesreallyhim/awesome-claude-code) | 🔒 鎖 PR（collaborator only） | 改開 Issue 或找替代清單 |
 | [awesome-ai-agents](https://github.com/e2b-dev/awesome-ai-agents) | 🚀 待審 | [#1285](https://github.com/e2b-dev/awesome-ai-agents/pull/1285) |
 
 ### P1 — 內容行銷（持續進行）
@@ -344,7 +344,10 @@ Week 4    X post                     X post              X post
 
 | 週 | X 發文 | 社群內容 | 備註 |
 |----|--------|---------|------|
-| 1 | Mon / Wed / Fri | Reddit 草擬（§7） | 週一準備，週末前交付 |
+| 1 | 🔄 每日 cron (明早 8 點) | Reddit 草擬（§7） | 週一準備，週末前交付 |
+| **2026-07-21** | ✅ Moltbook 痛點文 + X 1 篇（AI memory tools） | ✅ dev.to CORS 故事 + ✅ Medium 47 orders 故事 + ✅ r/MCP | — |
+| **2026-07-16** | X 2 篇（agent identity / memory） | — | 互動低 |
+| **2026-07-15** | — | ✅ Moltbook 2 篇 | — |
 | 2 | Mon / Wed / Fri | Discord 草擬（§7） | 同上 |
 | 3 | Mon / Wed / Fri | HN 草擬（§7） | 同上 |
 | 4 | Mon / Wed / Fri | 月末 review | 檢查本月發文數、社群草稿交付情況、MCP 目錄進度 |
